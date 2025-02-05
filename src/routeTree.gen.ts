@@ -23,10 +23,7 @@ const LoginLazyImport = createFileRoute('/login')()
 const VendorIndexLazyImport = createFileRoute('/vendor/')()
 const VendorSignupLazyImport = createFileRoute('/vendor/signup')()
 const VendorLoginLazyImport = createFileRoute('/vendor/login')()
-const VendorProductIndexLazyImport = createFileRoute('/vendor/product/')()
-const VendorProductProductIdLazyImport = createFileRoute(
-  '/vendor/product/$productId',
-)()
+const VendorProductsIndexLazyImport = createFileRoute('/vendor/products/')()
 
 // Create/Update Routes
 
@@ -72,22 +69,12 @@ const VendorLoginLazyRoute = VendorLoginLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/vendor/login.lazy').then((d) => d.Route))
 
-const VendorProductIndexLazyRoute = VendorProductIndexLazyImport.update({
-  id: '/vendor/product/',
-  path: '/vendor/product/',
+const VendorProductsIndexLazyRoute = VendorProductsIndexLazyImport.update({
+  id: '/vendor/products/',
+  path: '/vendor/products/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() =>
-  import('./routes/vendor/product/index.lazy').then((d) => d.Route),
-)
-
-const VendorProductProductIdLazyRoute = VendorProductProductIdLazyImport.update(
-  {
-    id: '/vendor/product/$productId',
-    path: '/vendor/product/$productId',
-    getParentRoute: () => rootRoute,
-  } as any,
-).lazy(() =>
-  import('./routes/vendor/product/$productId.lazy').then((d) => d.Route),
+  import('./routes/vendor/products/index.lazy').then((d) => d.Route),
 )
 
 // Populate the FileRoutesByPath interface
@@ -143,18 +130,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VendorIndexLazyImport
       parentRoute: typeof rootRoute
     }
-    '/vendor/product/$productId': {
-      id: '/vendor/product/$productId'
-      path: '/vendor/product/$productId'
-      fullPath: '/vendor/product/$productId'
-      preLoaderRoute: typeof VendorProductProductIdLazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/vendor/product/': {
-      id: '/vendor/product/'
-      path: '/vendor/product'
-      fullPath: '/vendor/product'
-      preLoaderRoute: typeof VendorProductIndexLazyImport
+    '/vendor/products/': {
+      id: '/vendor/products/'
+      path: '/vendor/products'
+      fullPath: '/vendor/products'
+      preLoaderRoute: typeof VendorProductsIndexLazyImport
       parentRoute: typeof rootRoute
     }
   }
@@ -170,8 +150,7 @@ export interface FileRoutesByFullPath {
   '/vendor/login': typeof VendorLoginLazyRoute
   '/vendor/signup': typeof VendorSignupLazyRoute
   '/vendor': typeof VendorIndexLazyRoute
-  '/vendor/product/$productId': typeof VendorProductProductIdLazyRoute
-  '/vendor/product': typeof VendorProductIndexLazyRoute
+  '/vendor/products': typeof VendorProductsIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
@@ -182,8 +161,7 @@ export interface FileRoutesByTo {
   '/vendor/login': typeof VendorLoginLazyRoute
   '/vendor/signup': typeof VendorSignupLazyRoute
   '/vendor': typeof VendorIndexLazyRoute
-  '/vendor/product/$productId': typeof VendorProductProductIdLazyRoute
-  '/vendor/product': typeof VendorProductIndexLazyRoute
+  '/vendor/products': typeof VendorProductsIndexLazyRoute
 }
 
 export interface FileRoutesById {
@@ -195,8 +173,7 @@ export interface FileRoutesById {
   '/vendor/login': typeof VendorLoginLazyRoute
   '/vendor/signup': typeof VendorSignupLazyRoute
   '/vendor/': typeof VendorIndexLazyRoute
-  '/vendor/product/$productId': typeof VendorProductProductIdLazyRoute
-  '/vendor/product/': typeof VendorProductIndexLazyRoute
+  '/vendor/products/': typeof VendorProductsIndexLazyRoute
 }
 
 export interface FileRouteTypes {
@@ -209,8 +186,7 @@ export interface FileRouteTypes {
     | '/vendor/login'
     | '/vendor/signup'
     | '/vendor'
-    | '/vendor/product/$productId'
-    | '/vendor/product'
+    | '/vendor/products'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -220,8 +196,7 @@ export interface FileRouteTypes {
     | '/vendor/login'
     | '/vendor/signup'
     | '/vendor'
-    | '/vendor/product/$productId'
-    | '/vendor/product'
+    | '/vendor/products'
   id:
     | '__root__'
     | '/'
@@ -231,8 +206,7 @@ export interface FileRouteTypes {
     | '/vendor/login'
     | '/vendor/signup'
     | '/vendor/'
-    | '/vendor/product/$productId'
-    | '/vendor/product/'
+    | '/vendor/products/'
   fileRoutesById: FileRoutesById
 }
 
@@ -244,8 +218,7 @@ export interface RootRouteChildren {
   VendorLoginLazyRoute: typeof VendorLoginLazyRoute
   VendorSignupLazyRoute: typeof VendorSignupLazyRoute
   VendorIndexLazyRoute: typeof VendorIndexLazyRoute
-  VendorProductProductIdLazyRoute: typeof VendorProductProductIdLazyRoute
-  VendorProductIndexLazyRoute: typeof VendorProductIndexLazyRoute
+  VendorProductsIndexLazyRoute: typeof VendorProductsIndexLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -256,8 +229,7 @@ const rootRouteChildren: RootRouteChildren = {
   VendorLoginLazyRoute: VendorLoginLazyRoute,
   VendorSignupLazyRoute: VendorSignupLazyRoute,
   VendorIndexLazyRoute: VendorIndexLazyRoute,
-  VendorProductProductIdLazyRoute: VendorProductProductIdLazyRoute,
-  VendorProductIndexLazyRoute: VendorProductIndexLazyRoute,
+  VendorProductsIndexLazyRoute: VendorProductsIndexLazyRoute,
 }
 
 export const routeTree = rootRoute
@@ -277,8 +249,7 @@ export const routeTree = rootRoute
         "/vendor/login",
         "/vendor/signup",
         "/vendor/",
-        "/vendor/product/$productId",
-        "/vendor/product/"
+        "/vendor/products/"
       ]
     },
     "/": {
@@ -302,11 +273,8 @@ export const routeTree = rootRoute
     "/vendor/": {
       "filePath": "vendor/index.lazy.tsx"
     },
-    "/vendor/product/$productId": {
-      "filePath": "vendor/product/$productId.lazy.tsx"
-    },
-    "/vendor/product/": {
-      "filePath": "vendor/product/index.lazy.tsx"
+    "/vendor/products/": {
+      "filePath": "vendor/products/index.lazy.tsx"
     }
   }
 }
