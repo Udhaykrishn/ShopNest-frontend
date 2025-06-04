@@ -14,15 +14,6 @@ import {
     CheckCircle
 } from 'lucide-react';
 
-// const weeklyData = [
-//     { name: 'Mon', sales: 400 },
-//     { name: 'Tue', sales: 300 },
-//     { name: 'Wed', sales: 200 },
-//     { name: 'Thu', sales: 278 },
-//     { name: 'Fri', sales: 189 },
-//     { name: 'Sat', sales: 239 },
-// ];
-
 const productData = [
     { name: 'Green Leaf Lettuce', value: 400 },
     { name: 'Rainbow Chard', value: 300 },
@@ -35,7 +26,6 @@ const COLORS = ['#10b981', '#3b82f6', '#f97316', '#8b5cf6'];
 export function DashboardContent() {
     return (
         <div className="space-y-6 bg-background p-6">
-            {/* Sales Overview Cards */}
             <div className="grid grid-cols-5 gap-4">
                 {[
                     {
@@ -81,9 +71,7 @@ export function DashboardContent() {
                 ))}
             </div>
 
-            {/* Order Status & Sales Charts */}
             <div className="grid grid-cols-2 gap-6">
-                {/* Order Status */}
                 <Card>
                     <CardHeader>
                         <CardTitle>Order Status</CardTitle>
@@ -103,7 +91,6 @@ export function DashboardContent() {
                     </CardContent>
                 </Card>
 
-                {/* Best Selling Products */}
                 <Card>
                     <CardHeader>
                         <CardTitle>Best Selling Products</CardTitle>
@@ -119,7 +106,7 @@ export function DashboardContent() {
                                     dataKey="value"
                                     label
                                 >
-                                    {productData.map((entry, index) => (
+                                    {productData.map((_entry, index) => (
                                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                     ))}
                                 </Pie>

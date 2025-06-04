@@ -1,6 +1,5 @@
-// src/routes/_layout.tsx
 import React, { useState } from 'react';
-import { Outlet, useRouter } from '@tanstack/react-router';
+import {  useRouter } from '@tanstack/react-router';
 import {
     LayoutDashboard,
     Package,
@@ -73,9 +72,6 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
     const router = useRouter();
     const [activeSection, setActiveSection] = useState('dashboard');
 
-    // Get current path and update active section
-    const currentPath = router.state.location.pathname;
-    const currentSection = currentPath.split('/').pop() || 'dashboard';
 
     const handleNavigation = (path: string, id: string) => {
         setActiveSection(id);
