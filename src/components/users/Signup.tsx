@@ -1,6 +1,6 @@
 import SignupForm from "@/components/users/signup-form"
 import { AuthWrapper } from "./AuthWrapper"
 
-export default function SignupPage() {
+export function SignupIndex() {
     return <AuthWrapper><SignupForm /></AuthWrapper>
 }

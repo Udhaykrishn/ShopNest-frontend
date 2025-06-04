@@ -1,7 +1,7 @@
 import LoginForm from "@/components/users/login-form"
 import { AuthWrapper } from "./AuthWrapper"
 
-export default function LoginPage() {
+export function LoginIndex() {
   return <AuthWrapper>
     <LoginForm /></AuthWrapper>
 }
