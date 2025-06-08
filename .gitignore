@@ -26,4 +26,4 @@ dist-ssr
 .env
 .env.production
 
-*.gen.ts
+src/routeTree.gen.ts
