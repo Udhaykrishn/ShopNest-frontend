@@ -24,13 +24,15 @@ import { ModeToggle } from "./mode-toggle";
 import { LogoIcon } from "./Icons";
 import { Link } from "@tanstack/react-router";
 import { Badge } from "@/components/ui/badge";
+import { useAuthStore } from "@/stores/user/userAuthStore";
+import { useCartStore } from "@/stores/cart/useCartStore"
+import { useUserMutation } from "@/hooks/user/useUserProfile";
 
 interface RouteProps {
   href: string;
   label: string;
 }
 
-// Base routes always shown
 const baseRoutes: RouteProps[] = [
   {
     href: "/",
@@ -42,7 +44,6 @@ const baseRoutes: RouteProps[] = [
   },
 ];
 
-// Routes for non-authenticated users
 const authRoutes: RouteProps[] = [
   {
     href: "/login",
@@ -54,13 +55,22 @@ const authRoutes: RouteProps[] = [
   },
 ];
 
+
+
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [cartItemCount, setCartItemCount] = useState<number>(1);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true); // You'll want to get this from your auth context/state
+  const { isAuthenticated, logout } = useAuthStore()
+  const { cartLength } = useCartStore()
 
   // Combine routes based on authentication status
   const routeList = isAuthenticated ? baseRoutes : [...baseRoutes, ...authRoutes];
+
+  const {logout:userLogout} = useUserMutation()
+
+
+  const handleLogout = async ()=>{
+      await userLogout.mutateAsync()      
+  }
 
   return (
     <header className="sticky border-b-[1px] top-0 z-40 w-full bg-white dark:border-b-slate-700 dark:bg-background">
@@ -81,9 +91,9 @@ export const Navbar = () => {
             {isAuthenticated && (
               <Link to="/cart" className="relative">
                 <ShoppingCart className="h-5 w-5" />
-                {cartItemCount > 0 && (
+                {cartLength > 0 && (
                   <Badge variant="destructive" className="absolute -top-2 -right-2 h-4 w-4 flex items-center justify-center p-2">
-                    {cartItemCount}
+                    {cartLength}
                   </Badge>
                 )}
               </Link>
@@ -126,15 +136,18 @@ export const Navbar = () => {
                   {isAuthenticated ? (
                     <>
                       <Link
-                        to="/profile"
+                        to="/profile/user"
                         onClick={() => setIsOpen(false)}
                         className={buttonVariants({ variant: "ghost" })}
                       >
                         Profile
                       </Link>
                       <Link
-                        to="/logout"
-                        onClick={() => setIsOpen(false)}
+                        to="/"
+                        onClick={() => {
+                          logout()
+                          setIsOpen(false)
+                        }}
                         className={buttonVariants({ variant: "ghost" })}
                       >
                         Logout
@@ -179,9 +192,9 @@ export const Navbar = () => {
               <>
                 <Link to="/cart" className="relative">
                   <ShoppingCart className="h-5 w-5" />
-                  {cartItemCount > 0 && (
+                  {cartLength > 0 && (
                     <Badge className="absolute -top-2 -right-2 h-4 w-4 flex items-center bg-primary text-white  justify-center p-2">
-                      {cartItemCount}
+                      {cartLength}
                     </Badge>
                   )}
                 </Link>
@@ -193,20 +206,20 @@ export const Navbar = () => {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem>
-                      <Link to="/profile" className="flex hover:text-primary items-center">
+                      <Link to="/profile/user" className="flex hover:text-primary items-center">
                         <User className="mr-2 h-4 w-4" />
                         Profile
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                      <Link to="/settings" className="flex hover:text-primary items-center">
+                      <Link to="/" className="flex hover:text-primary items-center">
                         <Settings className="mr-2 h-4 w-4" />
                         Settings
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem >
-                      <Link to="/logout" className="flex hover:text-red-600 items-center " >
+                      <Link to="/" onClick={handleLogout} className="flex hover:text-red-600 items-center " >
                         <LogOut className="mr-2 h-4 w-4 hover:bg-primary" />
                         Logout
                       </Link>

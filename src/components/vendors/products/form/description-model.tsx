@@ -17,7 +17,7 @@ export const DescriptionInputWithModal: React.FC<{
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const { mutate, isPending } = useMutation({
-        mutationFn: (prompt: string) => api.post("http://localhost:3001/categorys/gemini", { prompt }).then((res) => res.data),
+        mutationFn: (prompt: string) => api.post("http://shopnest.zapto.org/api/categorys/gemini", { prompt }).then((res) => res.data),
         onSuccess: (data: any) => {
             form.setValue("description", data.data, { shouldValidate: true });
             toast({ title: "Success", description: "Description generated successfully!" });

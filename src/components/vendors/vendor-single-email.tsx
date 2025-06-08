@@ -49,7 +49,7 @@ export function EmailForm({
     const sendEmailMutation = useMutation({
         mutationFn: async (data: EmailFormValues) => {
             try {
-                const res = await axios.post("http://localhost:3001/users/verify-email", data);
+                const res = await axios.post("http://shopnest.zapto.org/api/users/verify-email", data);
                 return res.data;
             } catch (error: any) {
                 console.log(error);

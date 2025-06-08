@@ -66,7 +66,7 @@ export function LoginPage({
   const googleAuthMutation = useMutation({
     mutationFn: async (credentialResponse: any) => {
       const res = await axios.post(
-        "http://localhost:3001/auth/user/google",
+        "http://shopnest.zapto.org/api/auth/user/google",
         { credential: credentialResponse.credential },
         { withCredentials: true, headers: { "Content-Type": "application/json" } }
       );

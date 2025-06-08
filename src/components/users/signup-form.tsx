@@ -71,7 +71,7 @@ export function SignupPage({ className, ...props }: React.ComponentProps<"div">)
     watch("phone");
 
     const signupMutation = useMutation({
-        mutationFn: (data: SignupFormValues) => axios.post("http://localhost:3001/auth/user/signup", data).then(res => res.data),
+        mutationFn: (data: SignupFormValues) => axios.post("http://shopnest.zapto.org/api/auth/user/signup", data).then(res => res.data),
         onSuccess: (data) => {
             setEmail(data.data);
             setFetchUrl("users/verify-otp");
@@ -82,7 +82,7 @@ export function SignupPage({ className, ...props }: React.ComponentProps<"div">)
     });
 
     const googleAuthMutation = useMutation({
-        mutationFn: (credentialResponse: any) => axios.post("http://localhost:3001/auth/user/google", { credential: credentialResponse.credential }, { withCredentials: true }).then(res => res.data),
+        mutationFn: (credentialResponse: any) => axios.post("http://shopnest.zapto.org/api/auth/user/google", { credential: credentialResponse.credential }, { withCredentials: true }).then(res => res.data),
         onSuccess: (data) => {
             toast({ variant: "default", title: "Login Successful", description: "Google login successful" });
             setAuth({isAuthenticated:true,role:data.data.role,id:data.data._id});

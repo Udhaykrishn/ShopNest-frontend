@@ -13,43 +13,58 @@ interface FAQProps {
 
 const FAQList: FAQProps[] = [
   {
-    question: "Is this template free?",
-    answer: "Yes. It is a free ChadcnUI template.",
+    question: "What is ShopNest?",
+    answer:
+      "ShopNest is a multi-vendor e-commerce platform where you can buy and sell a wide variety of products. Think of it as your one-stop shop, connecting customers with vendors from across India and beyond, offering everything from fashion to electronics at competitive prices.",
     value: "item-1",
   },
   {
-    question: "Lorem ipsum dolor sit amet consectetur adipisicing elit?",
+    question: "How can I become a vendor on ShopNest?",
     answer:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint labore quidem quam? Consectetur sapiente iste rerum reiciendis animi nihil nostrum sit quo, modi quod.",
+      "To become a vendor, sign up on our Vendor Portal, submit your business details, and get your products approved by our team. Once approved, you can start listing your items and reach millions of ShopNest customers!",
     value: "item-2",
   },
   {
-    question:
-      "Lorem ipsum dolor sit amet  Consectetur natus dolores minus quibusdam?",
+    question: "Are the products on ShopNest genuine?",
     answer:
-      "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Labore qui nostrum reiciendis veritatis necessitatibus maxime quis ipsa vitae cumque quo?",
+      "Yes! We work closely with verified vendors to ensure product authenticity. Every item goes through a quality check before approval, and we encourage customer reviews to maintain trust and transparency.",
     value: "item-3",
   },
   {
-    question: "Lorem ipsum dolor sit amet, consectetur adipisicing elit?",
-    answer: "Lorem ipsum dolor sit amet consectetur, adipisicing elit.",
+    question: "What payment methods does ShopNest accept?",
+    answer:
+      "ShopNest supports multiple payment options, including UPI, credit/debit cards, net banking, and cash on delivery (COD) in select areas. Shop with ease using your preferred method!",
     value: "item-4",
   },
   {
-    question:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur natus?",
+    question: "How does ShopNest ensure fast delivery?",
     answer:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint labore quidem quam? Consectetur sapiente iste rerum reiciendis animi nihil nostrum sit quo, modi quod.",
+      "We partner with top logistics providers across India to offer lightning-fast delivery. Most orders are delivered within 2-5 days, depending on your location, with real-time tracking available for every purchase.",
     value: "item-5",
+  },
+  {
+    question: "Can I return or exchange items on ShopNest?",
+    answer:
+      "Absolutely! ShopNest offers a hassle-free return and exchange policy. If you’re not satisfied with your purchase, you can return it within 7 days of delivery, provided it meets our return conditions.",
+    value: "item-6",
+  },
+  {
+    question: "How do I contact ShopNest support?",
+    answer:
+      "Our customer support team is here 24/7. Reach out via email at support@shopnest.in, call us at 1800-123-4567, or use the live chat feature on our website for instant assistance.",
+    value: "item-7",
+  },
+  {
+    question: "Does ShopNest offer discounts or deals?",
+    answer:
+      "Yes! ShopNest regularly features discounts, flash sales, and exclusive deals from our vendors. Keep an eye on our homepage or subscribe to our newsletter for the latest offers!",
+    value: "item-8",
   },
 ];
 
 export const FAQ = () => {
   return (
-    <section
-      id="faq"
-      className="container py-24 sm:py-32"
-    >
+    <section id="faq" className="container py-24 sm:py-32">
       <h2 className="text-3xl md:text-4xl font-bold mb-4">
         Frequently Asked{" "}
         <span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
@@ -57,20 +72,12 @@ export const FAQ = () => {
         </span>
       </h2>
 
-      <Accordion
-        type="single"
-        collapsible
-        className="w-full AccordionRoot"
-      >
+      <Accordion type="single" collapsible className="w-full AccordionRoot">
         {FAQList.map(({ question, answer, value }: FAQProps) => (
-          <AccordionItem
-            key={value}
-            value={value}
-          >
+          <AccordionItem key={value} value={value}>
             <AccordionTrigger className="text-left">
               {question}
             </AccordionTrigger>
-
             <AccordionContent>{answer}</AccordionContent>
           </AccordionItem>
         ))}

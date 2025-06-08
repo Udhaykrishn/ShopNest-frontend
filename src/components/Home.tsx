@@ -1,171 +1,191 @@
-import { Button } from "@/components/ui/button";
-import { HeroCards } from "@/components/HeroCards";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Eye, Heart, ShoppingBag, Star, TrendingUp, Timer, Tag, Package } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { useState } from "react";
+import { useAllProducts } from "@/hooks/useAllProducts";
+import { Button } from "./ui/button";
+import {
+  ShoppingBag,
+  Tag,
+  Timer,
+  TrendingUp,
+  PackageX,
+  AlertCircle,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+import HeroCards from "./HeroCards";
+import { ProductCard, ProductCarousel } from "./products";
+import { Skeleton } from "./ui/skeleton";
+import { PromoBanner } from "./shop/promo-banner";
+import { FAQ } from "./FAQ";
+import { Footer } from "./Footer";
+import CookieConsent from "./cookie-page";
 
-const products = [
-  {
-    id: 1,
-    title: "Sony WH-1000XM5 Headphones",
-    description: "Industry-leading noise cancellation with exceptional sound quality",
-    price: 399.99,
-    image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&h=600&q=80",
-    category: "Electronics",
-    stock: 15,
-    rating: 4.8,
-    variants: ["Black", "Silver", "Midnight Blue"]
-  },
-  {
-    id: 2,
-    title: "Apple MacBook Air M2",
-    description: "Supercharged by M2 chip for exceptional performance and battery life",
-    price: 1199.99,
-    image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&h=600&q=80",
-    category: "Electronics",
-    stock: 10,
-    rating: 4.9,
-    variants: ["Space Gray", "Silver", "Midnight"]
-  },
-  {
-    id: 3,
-    title: "Samsung Galaxy S24 Ultra",
-    description: "Next-generation smartphone with advanced AI capabilities",
-    price: 1299.99,
-    image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&h=600&q=80",
-    category: "Electronics",
-    stock: 20,
-    rating: 4.7,
-    variants: ["Titanium Black", "Titanium Gray", "Titanium Violet"]
-  },
-  {
-    id: 4,
-    title: "iPad Air",
-    description: "Powerful. Colorful. Wonderful. The most versatile iPad Air yet",
-    price: 599.99,
-    image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&h=600&q=80",
-    category: "Electronics",
-    stock: 25,
-    rating: 4.8,
-    variants: ["Space Gray", "Blue", "Pink", "Purple", "Starlight"]
-  }
-];
+export function HomePage() {
+  const [page, setPage] = useState(1);
+  const limit = 8;
 
-export  function HomePage() {
+  const { data: products, isLoading, isError, isSuccess } = useAllProducts("status=approved&isBlocked=false");
+
+  const normalizedProducts = isSuccess && Array.isArray(products?.data)
+    ? products.data.map((product) => ({
+      ...product,
+      category: typeof product.category === 'string'
+        ? product.category
+        : (product.category?.name || "Uncategorized"),
+      subcategory: product?.subCategory ?? product?.subcategory ?? "N/A",
+      variants: Array.isArray(product?.variants) ? product.variants : [],
+    }))
+    : [];
+
+  const paginatedProducts = normalizedProducts.slice((page - 1) * limit, page * limit);
+
+  const totalProducts = normalizedProducts.length;
+  const totalPages = Math.ceil(totalProducts / limit) || 1;
+
   return (
-    <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <section className="container grid lg:grid-cols-2 place-items-center py-20 md:py-32 gap-10">
-        <div className="text-center lg:text-start space-y-6">
-          <main className="text-5xl md:text-6xl font-bold">
-            <h1 className="inline">
-              <span className="inline text-primary">ShopNest</span>{" "}
+    <>
+      <div className="min-h-screen bg-background">
+        <section className="container grid lg:grid-cols-2 place-items-center py-20 md:py-32 gap-10">
+          <div className="text-center lg:text-start space-y-6">
+            <main className="text-5xl md:text-6xl font-bold">
+              <h1 className="inline">
+                <span className="inline text-primary">ShopNest</span>{" "}
+              </h1>
+              <h2 className="inline">
+                Your Ultimate{" "}
+                <span className="inline text-primary">Shopping</span>{" "}
+                Destination
+              </h2>
+            </main>
+            <p className="text-xl text-muted-foreground md:w-10/12 mx-auto lg:mx-0">
+              Discover an amazing collection of products with great deals and
+              lightning-fast delivery. Your perfect shopping experience starts here.
+            </p>
+            <div className="space-y-4 md:space-y-0 md:space-x-4">
+              <Button className="w-full md:w-1/3">
+                Go To Shop
+                <ShoppingBag className="ml-2 w-5 h-5" />
+              </Button>
+            </div>
+          </div>
+
+          <div className="z-10">
+
+            <HeroCards />
+          </div>
+        </section>
+
+        <section className="container py-16">
+          <div className="text-center mb-12">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 dark:text-white">
+              Welcome to <span className="text-primary">ShopNest</span>
             </h1>
-            <h2 className="inline">
-              Your Ultimate{" "}
-              <span className="inline text-primary">Shopping</span>{" "}
-              Destination
-            </h2>
-          </main>
-
-          <p className="text-xl text-muted-foreground md:w-10/12 mx-auto lg:mx-0">
-            Discover an amazing collection of products with great deals and 
-            lightning-fast delivery. Your perfect shopping experience starts here.
-          </p>
-
-          <div className="space-y-4 md:space-y-0 md:space-x-4">
-            <Button className="w-full md:w-1/3">
-              Go To Shop
-              <ShoppingBag className="ml-2 w-5 h-5" />
-            </Button>
+            <p className="text-muted-foreground text-xl mb-8 dark:text-gray-400">
+              Discover amazing products at great prices
+            </p>
           </div>
-        </div>
 
-        <div className="z-10">
-          <HeroCards />
-        </div>
-      </section>
+          <PromoBanner />
 
-      {/* Products Section */}
-      <section className="container py-16">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4">
-          <div>
-            <h2 className="text-3xl font-bold mb-2 text-primary">Featured Products</h2>
-            <p className="text-muted-foreground">Discover our selection of premium products</p>
+          <div className="z-10">
+            <ProductCarousel />
           </div>
-          <div className="flex flex-wrap gap-2">
-            <Button variant="outline" size="sm">
-              <TrendingUp className="mr-2 h-4 w-4" />
-              Trending
-            </Button>
-            <Button variant="outline" size="sm">
-              <Timer className="mr-2 h-4 w-4" />
-              New Arrivals
-            </Button>
-            <Button variant="outline" size="sm">
-              <Tag className="mr-2 h-4 w-4" />
-              Best Deals
-            </Button>
-          </div>
-        </div>
+        </section>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {products.map((product) => (
-            <Card key={product.id} className="group">
-              <CardContent className="p-6">
-                <div className="relative mb-6">
-                  <div className="aspect-square overflow-hidden rounded-lg">
-                    <img
-                      src={product.image}
-                      alt={product.title}
-                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                    {product.stock < 5 && (
-                      <Badge className="absolute top-2 left-2">
-                        Low Stock: {product.stock} left
-                      </Badge>
-                    )}
-                  </div>
-                  <div className="absolute top-2 right-2 flex gap-2">
-                    <button className="p-2 bg-background/80 backdrop-blur-sm rounded-full hover:bg-background transition-colors">
-                      <Heart className="h-4 w-4 text-primary" />
-                    </button>
-                    <button className="p-2 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors">
-                      <Eye className="h-4 w-4" />
-                    </button>
-                  </div>
+        {/* Products Section */}
+        <section className="container py-16">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4">
+            <div>
+              <h2 className="text-3xl font-bold mb-2 text-primary">Featured Products</h2>
+              <p className="text-muted-foreground">Discover our selection of premium products</p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <Button variant="outline" size="sm">
+                <TrendingUp className="mr-2 h-4 w-4" />
+                Trending
+              </Button>
+              <Button variant="outline" size="sm">
+                <Timer className="mr-2 h-4 w-4" />
+                New Arrivals
+              </Button>
+              <Button variant="outline" size="sm">
+                <Tag className="mr-2 h-4 w-4" />
+                Best Deals
+              </Button>
+            </div>
+          </div>
+
+          {isLoading && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[...Array(limit)].map((_, index) => (
+                <div key={index} className="space-y-3">
+                  <Skeleton className="h-48 w-full rounded-lg" />
+                  <Skeleton className="h-4 w-3/4" />
+                  <Skeleton className="h-4 w-1/2" />
                 </div>
-                <CardHeader className="p-0 space-y-4">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <CardTitle className="text-xl font-semibold">{product.title}</CardTitle>
-                      <Badge variant="secondary" className="mt-2">
-                        {product.category}
-                      </Badge>
-                    </div>
-                    <div className="flex items-center bg-primary/10 px-2 py-1 rounded">
-                      <Star className="h-4 w-4 text-primary" />
-                      <span className="ml-1 text-sm font-medium">{product.rating}</span>
-                    </div>
-                  </div>
-                  <p className="text-muted-foreground text-sm line-clamp-2">{product.description}</p>
-                  <div className="space-y-2">
-                    <p className="font-bold text-2xl text-primary">${product.price}</p>
-                    <div className="flex items-center text-sm text-muted-foreground">
-                      <Package className="h-4 w-4 mr-1" />
-                      {product.stock} in stock
-                    </div>
-                  </div>
-                 
-                </CardHeader>
-                <Button className="w-full mt-6">
-                  <ShoppingBag className="mr-2 h-4 w-4" /> Add to Cart
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
-    </div>
+              ))}
+            </div>
+          )}
+
+          {isError && (
+            <div className="text-center py-12">
+              <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+              <p className="text-red-500 text-lg font-medium">Failed to load products</p>
+              <p className="text-muted-foreground">Please try again later</p>
+            </div>
+          )}
+
+          {isSuccess && (
+            <>
+              {paginatedProducts.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {paginatedProducts.map((product, index) => {
+                    console.log(`Rendering Product ${index}:`, product);
+                    return <ProductCard key={product?._id ?? `product-${index}`} product={product} />;
+                  })}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <PackageX className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                  <p className="text-muted-foreground text-lg font-medium">No products available</p>
+                  <p className="text-muted-foreground">Check back later for new items!</p>
+                </div>
+              )}
+
+              {/* Pagination Controls */}
+              {totalProducts > 0 && (
+                <div className="flex justify-center items-center gap-4 mt-8">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={page === 1}
+                    onClick={() => setPage((prev) => prev - 1)}
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                    Previous
+                  </Button>
+                  <span className="text-sm text-muted-foreground">
+                    Page {page} of {totalPages}
+                  </span>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={page === totalPages}
+                    onClick={() => setPage((prev) => prev + 1)}
+                  >
+                    Next
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </div>
+              )}
+            </>
+          )}
+        </section>
+        <section className="container py-16">
+          <FAQ />
+          <Footer />
+        </section>
+      </div>
+      <CookieConsent />
+    </>
   );
 }
