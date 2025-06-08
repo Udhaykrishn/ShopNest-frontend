@@ -63,7 +63,7 @@ export function ForgotPasswordForm({
         mutationFn: async (data: ResetPasswordFormValues) => {
             try {
                 const payload = { ...data, email };
-                const res = await axios.post("http://shopnest.zapto.org/api/auth/user/forgot-password", payload);
+                const res = await axios.post("https://shopnest.zapto.org/api/auth/user/forgot-password", payload);
                 return res.data;
             } catch (error: any) {
                 console.log(error);

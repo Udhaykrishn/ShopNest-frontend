@@ -27,7 +27,7 @@ function CategoryTable() {
   return (
     <TableWrapper
       columns={categoryColumns}
-      fetchUrl="http://shopnest.zapto.org/api/categorys"
+      fetchUrl="https://shopnest.zapto.org/api/categorys"
       filters={categoryFilters}
       pageSizeOptions={[5, 10, 20]}
     />

@@ -61,7 +61,7 @@ export type Product = {
 };
 
 const fetchRelatedProducts = async (category: string, subcategory: string): Promise<Product[]> => {
-  const { data } = await api.get(`http://shopnest.zapto.org/api/products/category?category=${category}&subcategory=${subcategory}`);
+  const { data } = await api.get(`https://shopnest.zapto.org/api/products/category?category=${category}&subcategory=${subcategory}`);
   if (!data) {
     throw new Error("Failed to fetch related products");
   }

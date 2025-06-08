@@ -44,7 +44,7 @@ export function VendorEmailForm({
     const sendEmailMutation = useMutation({
         mutationFn: async (data: EmailFormValues) => {
             try {
-                const res = await axios.post("http://shopnest.zapto.org/api/auth/vendor/verify-email", data);
+                const res = await axios.post("https://shopnest.zapto.org/api/auth/vendor/verify-email", data);
                 return res.data;
             } catch (error: any) {
                 console.log(error);

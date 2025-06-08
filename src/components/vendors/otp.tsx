@@ -52,7 +52,7 @@ const OTPVerification = () => {
         mutationFn: async () => {
             try {
                 const payload = { email };
-                const res = await axios.post("http://shopnest.zapto.org/api/auth/vendor/resend-otp", payload);
+                const res = await axios.post("https://shopnest.zapto.org/api/auth/vendor/resend-otp", payload);
                 return res.data;
             } catch (error: any) {
                 const err = error.response?.data;
@@ -92,7 +92,7 @@ const OTPVerification = () => {
             try {
                 const payload = { email, otp: data };
 
-                const { data: res } = await axios.post(`http://shopnest.zapto.org/api/auth/vendor/verify-otp`, payload);
+                const { data: res } = await axios.post(`https://shopnest.zapto.org/api/auth/vendor/verify-otp`, payload);
                 return res;
             } catch (error: any) {
                 const err = error.response?.data;

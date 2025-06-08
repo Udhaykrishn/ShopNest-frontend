@@ -6,7 +6,7 @@ export const useAllProducts = (query: string = "") => {
         queryKey: ["all-products", query],
         queryFn: async () => {
 
-            const url = query ? `http://shopnest.zapto.org/api/products?${query}` : `http://shopnest.zapto.org/api/products`
+            const url = query ? `https://shopnest.zapto.org/api/products?${query}` : `https://shopnest.zapto.org/api/products`
             const { data } = await axios.get(url)
             return data.data;
         }

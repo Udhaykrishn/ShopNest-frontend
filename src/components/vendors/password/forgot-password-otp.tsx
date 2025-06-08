@@ -53,7 +53,7 @@ export const VendorForgotPasswordOTP = () => {
             try {
                 const payload = { email };
                 console.log(payload)
-                const res = await axios.post("http://shopnest.zapto.org/api/auth/venodr/forgot-password-otp", payload);
+                const res = await axios.post("https://shopnest.zapto.org/api/auth/venodr/forgot-password-otp", payload);
                 return res.data;
             } catch (error: any) {
                 const err = error.response?.data;
@@ -93,7 +93,7 @@ export const VendorForgotPasswordOTP = () => {
             try {
                 const payload = { email, otp: data };
 
-                const { data: res } = await axios.post(`http://shopnest.zapto.org/api/auth/vendor/verify-password`, payload);
+                const { data: res } = await axios.post(`https://shopnest.zapto.org/api/auth/vendor/verify-password`, payload);
                 return res;
             } catch (error: any) {
                 const err = error.response?.data;

@@ -16,7 +16,7 @@ export const Route = createFileRoute('/_authenticated/products/$id')({
     const data = await queryClient.fetchQuery({
       queryKey,
       queryFn: async () => {
-        const { data } = await axios.get(`http://shopnest.zapto.org/api/products/${params.id}`)
+        const { data } = await axios.get(`https://shopnest.zapto.org/api/products/${params.id}`)
         
         if (data.data.isBlocked) {
           router.navigate({ to: "/shop" })

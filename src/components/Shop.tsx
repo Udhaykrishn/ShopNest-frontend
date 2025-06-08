@@ -31,8 +31,8 @@ import { ProductSkeleton } from './shop/product-loader';
 const fetchProducts = async (category: string): Promise<Product[]> => {
   const endpoint =
     category === "All Categories"
-      ? 'http://shopnest.zapto.org/api/products?status=approved'
-      : `http://shopnest.zapto.org/api/products/category?category=${category}`;
+      ? 'https://shopnest.zapto.org/api/products?status=approved'
+      : `https://shopnest.zapto.org/api/products/category?category=${category}`;
   const response = await api.get(endpoint);
   console.log(response.data.data.data);
   return response.data.data.data;
