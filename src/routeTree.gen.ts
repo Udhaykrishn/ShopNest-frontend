@@ -13,37 +13,154 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as VendorLandingImport } from './routes/vendor-landing'
+import { Route as SignupImport } from './routes/signup'
+import { Route as PaymentImport } from './routes/payment'
+import { Route as OtpImport } from './routes/otp'
+import { Route as LoginImport } from './routes/login'
+import { Route as ForgotPasswordOtpImport } from './routes/forgot-password-otp'
+import { Route as NotFoundImport } from './routes/_not-found'
+import { Route as AuthenticatedImport } from './routes/_authenticated'
 import { Route as IndexImport } from './routes/index'
+import { Route as VendorTermsImport } from './routes/vendor/terms'
+import { Route as VendorSignupImport } from './routes/vendor/signup'
+import { Route as VendorPrivacyImport } from './routes/vendor/privacy'
+import { Route as VendorLoginImport } from './routes/vendor/login'
+import { Route as VendorForgotPasswordImport } from './routes/vendor/forgot-password'
+import { Route as VendorForgotOtpImport } from './routes/vendor/forgot-otp'
+import { Route as VendorForgotImport } from './routes/vendor/forgot'
+import { Route as VendorAuthImport } from './routes/vendor/_auth'
+import { Route as AdminLoginImport } from './routes/admin/login'
+import { Route as AdminProctedImport } from './routes/admin/_procted'
+import { Route as AuthenticatedShopImport } from './routes/_authenticated/shop'
+import { Route as AuthenticatedOrderFaliureImport } from './routes/_authenticated/order-faliure'
+import { Route as VendorAuthIndexImport } from './routes/vendor/_auth/index'
+import { Route as AdminProctedIndexImport } from './routes/admin/_procted/index'
+import { Route as AuthenticatedProductsIdImport } from './routes/_authenticated/products.$id'
+import { Route as VendorAuthWalletIndexImport } from './routes/vendor/_auth/wallet/index'
+import { Route as VendorAuthProfileIndexImport } from './routes/vendor/_auth/profile/index'
+import { Route as VendorAuthOrdersIndexImport } from './routes/vendor/_auth/orders/index'
+import { Route as AdminProctedVendorIndexImport } from './routes/admin/_procted/vendor/index'
+import { Route as AdminProctedOffersIndexImport } from './routes/admin/_procted/offers/index'
+import { Route as AdminProctedCouponIndexImport } from './routes/admin/_procted/coupon/index'
+import { Route as AuthenticatedProfileWishlistIndexImport } from './routes/_authenticated/profile/wishlist/index'
+import { Route as AuthenticatedProfileWalletIndexImport } from './routes/_authenticated/profile/wallet/index'
+import { Route as VendorAuthProductsIdImport } from './routes/vendor/_auth/products/$id'
+import { Route as VendorAuthOrdersIdImport } from './routes/vendor/_auth/orders/$id'
+import { Route as AuthenticatedProfileOrdersIdImport } from './routes/_authenticated/profile/orders/$id'
 
 // Create Virtual Routes
 
-const SignupLazyImport = createFileRoute('/signup')()
-const ShopLazyImport = createFileRoute('/shop')()
-const LoginLazyImport = createFileRoute('/login')()
-const VendorIndexLazyImport = createFileRoute('/vendor/')()
-const VendorSignupLazyImport = createFileRoute('/vendor/signup')()
-const VendorLoginLazyImport = createFileRoute('/vendor/login')()
-const VendorProductsIndexLazyImport = createFileRoute('/vendor/products/')()
+const VendorImport = createFileRoute('/vendor')()
+const AdminImport = createFileRoute('/admin')()
+const PasswordLazyImport = createFileRoute('/password')()
+const ForgotLazyImport = createFileRoute('/forgot')()
+const CategoryLazyImport = createFileRoute('/category')()
+const VendorOtpLazyImport = createFileRoute('/vendor/otp')()
+const AuthenticatedOrderLazyImport = createFileRoute('/_authenticated/order')()
+const AuthenticatedCheckoutLazyImport = createFileRoute(
+  '/_authenticated/checkout',
+)()
+const AuthenticatedCartLazyImport = createFileRoute('/_authenticated/cart')()
+const AuthenticatedProfileUserLazyImport = createFileRoute(
+  '/_authenticated/profile/user',
+)()
+const AuthenticatedProfileAddressLazyImport = createFileRoute(
+  '/_authenticated/profile/address',
+)()
+const VendorAuthProductsIndexLazyImport = createFileRoute(
+  '/vendor/_auth/products/',
+)()
+const AdminProctedUsersIndexLazyImport = createFileRoute(
+  '/admin/_procted/users/',
+)()
+const AdminProctedProductIndexLazyImport = createFileRoute(
+  '/admin/_procted/product/',
+)()
+const AdminProctedCategoryIndexLazyImport = createFileRoute(
+  '/admin/_procted/category/',
+)()
+const AuthenticatedProfileOrdersIndexLazyImport = createFileRoute(
+  '/_authenticated/profile/orders/',
+)()
 
 // Create/Update Routes
 
-const SignupLazyRoute = SignupLazyImport.update({
+const VendorRoute = VendorImport.update({
+  id: '/vendor',
+  path: '/vendor',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AdminRoute = AdminImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PasswordLazyRoute = PasswordLazyImport.update({
+  id: '/password',
+  path: '/password',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/password.lazy').then((d) => d.Route))
+
+const ForgotLazyRoute = ForgotLazyImport.update({
+  id: '/forgot',
+  path: '/forgot',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/forgot.lazy').then((d) => d.Route))
+
+const CategoryLazyRoute = CategoryLazyImport.update({
+  id: '/category',
+  path: '/category',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/category.lazy').then((d) => d.Route))
+
+const VendorLandingRoute = VendorLandingImport.update({
+  id: '/vendor-landing',
+  path: '/vendor-landing',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const SignupRoute = SignupImport.update({
   id: '/signup',
   path: '/signup',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/signup.lazy').then((d) => d.Route))
+} as any)
 
-const ShopLazyRoute = ShopLazyImport.update({
-  id: '/shop',
-  path: '/shop',
+const PaymentRoute = PaymentImport.update({
+  id: '/payment',
+  path: '/payment',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/shop.lazy').then((d) => d.Route))
+} as any)
 
-const LoginLazyRoute = LoginLazyImport.update({
+const OtpRoute = OtpImport.update({
+  id: '/otp',
+  path: '/otp',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const LoginRoute = LoginImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/login.lazy').then((d) => d.Route))
+} as any)
+
+const ForgotPasswordOtpRoute = ForgotPasswordOtpImport.update({
+  id: '/forgot-password-otp',
+  path: '/forgot-password-otp',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const NotFoundRoute = NotFoundImport.update({
+  id: '/_not-found',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthenticatedRoute = AuthenticatedImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
@@ -51,31 +168,258 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const VendorIndexLazyRoute = VendorIndexLazyImport.update({
+const VendorOtpLazyRoute = VendorOtpLazyImport.update({
+  id: '/otp',
+  path: '/otp',
+  getParentRoute: () => VendorRoute,
+} as any).lazy(() => import('./routes/vendor/otp.lazy').then((d) => d.Route))
+
+const AuthenticatedOrderLazyRoute = AuthenticatedOrderLazyImport.update({
+  id: '/order',
+  path: '/order',
+  getParentRoute: () => AuthenticatedRoute,
+} as any).lazy(() =>
+  import('./routes/_authenticated/order.lazy').then((d) => d.Route),
+)
+
+const AuthenticatedCheckoutLazyRoute = AuthenticatedCheckoutLazyImport.update({
+  id: '/checkout',
+  path: '/checkout',
+  getParentRoute: () => AuthenticatedRoute,
+} as any).lazy(() =>
+  import('./routes/_authenticated/checkout.lazy').then((d) => d.Route),
+)
+
+const AuthenticatedCartLazyRoute = AuthenticatedCartLazyImport.update({
+  id: '/cart',
+  path: '/cart',
+  getParentRoute: () => AuthenticatedRoute,
+} as any).lazy(() =>
+  import('./routes/_authenticated/cart.lazy').then((d) => d.Route),
+)
+
+const VendorTermsRoute = VendorTermsImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => VendorRoute,
+} as any)
+
+const VendorSignupRoute = VendorSignupImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => VendorRoute,
+} as any)
+
+const VendorPrivacyRoute = VendorPrivacyImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => VendorRoute,
+} as any)
+
+const VendorLoginRoute = VendorLoginImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => VendorRoute,
+} as any)
+
+const VendorForgotPasswordRoute = VendorForgotPasswordImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => VendorRoute,
+} as any)
+
+const VendorForgotOtpRoute = VendorForgotOtpImport.update({
+  id: '/forgot-otp',
+  path: '/forgot-otp',
+  getParentRoute: () => VendorRoute,
+} as any)
+
+const VendorForgotRoute = VendorForgotImport.update({
+  id: '/forgot',
+  path: '/forgot',
+  getParentRoute: () => VendorRoute,
+} as any)
+
+const VendorAuthRoute = VendorAuthImport.update({
+  id: '/_auth',
+  getParentRoute: () => VendorRoute,
+} as any)
+
+const AdminLoginRoute = AdminLoginImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AdminRoute,
+} as any)
+
+const AdminProctedRoute = AdminProctedImport.update({
+  id: '/_procted',
+  getParentRoute: () => AdminRoute,
+} as any)
+
+const AuthenticatedShopRoute = AuthenticatedShopImport.update({
+  id: '/shop',
+  path: '/shop',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const AuthenticatedOrderFaliureRoute = AuthenticatedOrderFaliureImport.update({
+  id: '/order-faliure',
+  path: '/order-faliure',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const VendorAuthIndexRoute = VendorAuthIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => VendorAuthRoute,
+} as any)
+
+const AdminProctedIndexRoute = AdminProctedIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminProctedRoute,
+} as any)
+
+const AuthenticatedProfileUserLazyRoute =
+  AuthenticatedProfileUserLazyImport.update({
+    id: '/profile/user',
+    path: '/profile/user',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any).lazy(() =>
+    import('./routes/_authenticated/profile/user.lazy').then((d) => d.Route),
+  )
+
+const AuthenticatedProfileAddressLazyRoute =
+  AuthenticatedProfileAddressLazyImport.update({
+    id: '/profile/address',
+    path: '/profile/address',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any).lazy(() =>
+    import('./routes/_authenticated/profile/address.lazy').then((d) => d.Route),
+  )
+
+const AuthenticatedProductsIdRoute = AuthenticatedProductsIdImport.update({
+  id: '/products/$id',
+  path: '/products/$id',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const VendorAuthProductsIndexLazyRoute =
+  VendorAuthProductsIndexLazyImport.update({
+    id: '/products/',
+    path: '/products/',
+    getParentRoute: () => VendorAuthRoute,
+  } as any).lazy(() =>
+    import('./routes/vendor/_auth/products/index.lazy').then((d) => d.Route),
+  )
+
+const AdminProctedUsersIndexLazyRoute = AdminProctedUsersIndexLazyImport.update(
+  {
+    id: '/users/',
+    path: '/users/',
+    getParentRoute: () => AdminProctedRoute,
+  } as any,
+).lazy(() =>
+  import('./routes/admin/_procted/users/index.lazy').then((d) => d.Route),
+)
+
+const AdminProctedProductIndexLazyRoute =
+  AdminProctedProductIndexLazyImport.update({
+    id: '/product/',
+    path: '/product/',
+    getParentRoute: () => AdminProctedRoute,
+  } as any).lazy(() =>
+    import('./routes/admin/_procted/product/index.lazy').then((d) => d.Route),
+  )
+
+const AdminProctedCategoryIndexLazyRoute =
+  AdminProctedCategoryIndexLazyImport.update({
+    id: '/category/',
+    path: '/category/',
+    getParentRoute: () => AdminProctedRoute,
+  } as any).lazy(() =>
+    import('./routes/admin/_procted/category/index.lazy').then((d) => d.Route),
+  )
+
+const AuthenticatedProfileOrdersIndexLazyRoute =
+  AuthenticatedProfileOrdersIndexLazyImport.update({
+    id: '/profile/orders/',
+    path: '/profile/orders/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any).lazy(() =>
+    import('./routes/_authenticated/profile/orders/index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const VendorAuthWalletIndexRoute = VendorAuthWalletIndexImport.update({
+  id: '/wallet/',
+  path: '/wallet/',
+  getParentRoute: () => VendorAuthRoute,
+} as any)
+
+const VendorAuthProfileIndexRoute = VendorAuthProfileIndexImport.update({
+  id: '/profile/',
+  path: '/profile/',
+  getParentRoute: () => VendorAuthRoute,
+} as any)
+
+const VendorAuthOrdersIndexRoute = VendorAuthOrdersIndexImport.update({
+  id: '/orders/',
+  path: '/orders/',
+  getParentRoute: () => VendorAuthRoute,
+} as any)
+
+const AdminProctedVendorIndexRoute = AdminProctedVendorIndexImport.update({
   id: '/vendor/',
   path: '/vendor/',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/vendor/index.lazy').then((d) => d.Route))
+  getParentRoute: () => AdminProctedRoute,
+} as any)
 
-const VendorSignupLazyRoute = VendorSignupLazyImport.update({
-  id: '/vendor/signup',
-  path: '/vendor/signup',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/vendor/signup.lazy').then((d) => d.Route))
+const AdminProctedOffersIndexRoute = AdminProctedOffersIndexImport.update({
+  id: '/offers/',
+  path: '/offers/',
+  getParentRoute: () => AdminProctedRoute,
+} as any)
 
-const VendorLoginLazyRoute = VendorLoginLazyImport.update({
-  id: '/vendor/login',
-  path: '/vendor/login',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/vendor/login.lazy').then((d) => d.Route))
+const AdminProctedCouponIndexRoute = AdminProctedCouponIndexImport.update({
+  id: '/coupon/',
+  path: '/coupon/',
+  getParentRoute: () => AdminProctedRoute,
+} as any)
 
-const VendorProductsIndexLazyRoute = VendorProductsIndexLazyImport.update({
-  id: '/vendor/products/',
-  path: '/vendor/products/',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() =>
-  import('./routes/vendor/products/index.lazy').then((d) => d.Route),
-)
+const AuthenticatedProfileWishlistIndexRoute =
+  AuthenticatedProfileWishlistIndexImport.update({
+    id: '/profile/wishlist/',
+    path: '/profile/wishlist/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedProfileWalletIndexRoute =
+  AuthenticatedProfileWalletIndexImport.update({
+    id: '/profile/wallet/',
+    path: '/profile/wallet/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const VendorAuthProductsIdRoute = VendorAuthProductsIdImport.update({
+  id: '/products/$id',
+  path: '/products/$id',
+  getParentRoute: () => VendorAuthRoute,
+} as any)
+
+const VendorAuthOrdersIdRoute = VendorAuthOrdersIdImport.update({
+  id: '/orders/$id',
+  path: '/orders/$id',
+  getParentRoute: () => VendorAuthRoute,
+} as any)
+
+const AuthenticatedProfileOrdersIdRoute =
+  AuthenticatedProfileOrdersIdImport.update({
+    id: '/profile/orders/$id',
+    path: '/profile/orders/$id',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -88,148 +432,826 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthenticatedImport
+      parentRoute: typeof rootRoute
+    }
+    '/_not-found': {
+      id: '/_not-found'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof NotFoundImport
+      parentRoute: typeof rootRoute
+    }
+    '/forgot-password-otp': {
+      id: '/forgot-password-otp'
+      path: '/forgot-password-otp'
+      fullPath: '/forgot-password-otp'
+      preLoaderRoute: typeof ForgotPasswordOtpImport
+      parentRoute: typeof rootRoute
+    }
     '/login': {
       id: '/login'
       path: '/login'
       fullPath: '/login'
-      preLoaderRoute: typeof LoginLazyImport
+      preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
-    '/shop': {
-      id: '/shop'
-      path: '/shop'
-      fullPath: '/shop'
-      preLoaderRoute: typeof ShopLazyImport
+    '/otp': {
+      id: '/otp'
+      path: '/otp'
+      fullPath: '/otp'
+      preLoaderRoute: typeof OtpImport
+      parentRoute: typeof rootRoute
+    }
+    '/payment': {
+      id: '/payment'
+      path: '/payment'
+      fullPath: '/payment'
+      preLoaderRoute: typeof PaymentImport
       parentRoute: typeof rootRoute
     }
     '/signup': {
       id: '/signup'
       path: '/signup'
       fullPath: '/signup'
-      preLoaderRoute: typeof SignupLazyImport
+      preLoaderRoute: typeof SignupImport
       parentRoute: typeof rootRoute
+    }
+    '/vendor-landing': {
+      id: '/vendor-landing'
+      path: '/vendor-landing'
+      fullPath: '/vendor-landing'
+      preLoaderRoute: typeof VendorLandingImport
+      parentRoute: typeof rootRoute
+    }
+    '/category': {
+      id: '/category'
+      path: '/category'
+      fullPath: '/category'
+      preLoaderRoute: typeof CategoryLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/forgot': {
+      id: '/forgot'
+      path: '/forgot'
+      fullPath: '/forgot'
+      preLoaderRoute: typeof ForgotLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/password': {
+      id: '/password'
+      path: '/password'
+      fullPath: '/password'
+      preLoaderRoute: typeof PasswordLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/_authenticated/order-faliure': {
+      id: '/_authenticated/order-faliure'
+      path: '/order-faliure'
+      fullPath: '/order-faliure'
+      preLoaderRoute: typeof AuthenticatedOrderFaliureImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/shop': {
+      id: '/_authenticated/shop'
+      path: '/shop'
+      fullPath: '/shop'
+      preLoaderRoute: typeof AuthenticatedShopImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminImport
+      parentRoute: typeof rootRoute
+    }
+    '/admin/_procted': {
+      id: '/admin/_procted'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminProctedImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginImport
+      parentRoute: typeof AdminImport
+    }
+    '/vendor': {
+      id: '/vendor'
+      path: '/vendor'
+      fullPath: '/vendor'
+      preLoaderRoute: typeof VendorImport
+      parentRoute: typeof rootRoute
+    }
+    '/vendor/_auth': {
+      id: '/vendor/_auth'
+      path: '/vendor'
+      fullPath: '/vendor'
+      preLoaderRoute: typeof VendorAuthImport
+      parentRoute: typeof VendorRoute
+    }
+    '/vendor/forgot': {
+      id: '/vendor/forgot'
+      path: '/forgot'
+      fullPath: '/vendor/forgot'
+      preLoaderRoute: typeof VendorForgotImport
+      parentRoute: typeof VendorImport
+    }
+    '/vendor/forgot-otp': {
+      id: '/vendor/forgot-otp'
+      path: '/forgot-otp'
+      fullPath: '/vendor/forgot-otp'
+      preLoaderRoute: typeof VendorForgotOtpImport
+      parentRoute: typeof VendorImport
+    }
+    '/vendor/forgot-password': {
+      id: '/vendor/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/vendor/forgot-password'
+      preLoaderRoute: typeof VendorForgotPasswordImport
+      parentRoute: typeof VendorImport
     }
     '/vendor/login': {
       id: '/vendor/login'
-      path: '/vendor/login'
+      path: '/login'
       fullPath: '/vendor/login'
-      preLoaderRoute: typeof VendorLoginLazyImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof VendorLoginImport
+      parentRoute: typeof VendorImport
+    }
+    '/vendor/privacy': {
+      id: '/vendor/privacy'
+      path: '/privacy'
+      fullPath: '/vendor/privacy'
+      preLoaderRoute: typeof VendorPrivacyImport
+      parentRoute: typeof VendorImport
     }
     '/vendor/signup': {
       id: '/vendor/signup'
-      path: '/vendor/signup'
+      path: '/signup'
       fullPath: '/vendor/signup'
-      preLoaderRoute: typeof VendorSignupLazyImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof VendorSignupImport
+      parentRoute: typeof VendorImport
     }
-    '/vendor/': {
-      id: '/vendor/'
+    '/vendor/terms': {
+      id: '/vendor/terms'
+      path: '/terms'
+      fullPath: '/vendor/terms'
+      preLoaderRoute: typeof VendorTermsImport
+      parentRoute: typeof VendorImport
+    }
+    '/_authenticated/cart': {
+      id: '/_authenticated/cart'
+      path: '/cart'
+      fullPath: '/cart'
+      preLoaderRoute: typeof AuthenticatedCartLazyImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/checkout': {
+      id: '/_authenticated/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof AuthenticatedCheckoutLazyImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/order': {
+      id: '/_authenticated/order'
+      path: '/order'
+      fullPath: '/order'
+      preLoaderRoute: typeof AuthenticatedOrderLazyImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/vendor/otp': {
+      id: '/vendor/otp'
+      path: '/otp'
+      fullPath: '/vendor/otp'
+      preLoaderRoute: typeof VendorOtpLazyImport
+      parentRoute: typeof VendorImport
+    }
+    '/_authenticated/products/$id': {
+      id: '/_authenticated/products/$id'
+      path: '/products/$id'
+      fullPath: '/products/$id'
+      preLoaderRoute: typeof AuthenticatedProductsIdImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/profile/address': {
+      id: '/_authenticated/profile/address'
+      path: '/profile/address'
+      fullPath: '/profile/address'
+      preLoaderRoute: typeof AuthenticatedProfileAddressLazyImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/profile/user': {
+      id: '/_authenticated/profile/user'
+      path: '/profile/user'
+      fullPath: '/profile/user'
+      preLoaderRoute: typeof AuthenticatedProfileUserLazyImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/admin/_procted/': {
+      id: '/admin/_procted/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminProctedIndexImport
+      parentRoute: typeof AdminProctedImport
+    }
+    '/vendor/_auth/': {
+      id: '/vendor/_auth/'
+      path: '/'
+      fullPath: '/vendor/'
+      preLoaderRoute: typeof VendorAuthIndexImport
+      parentRoute: typeof VendorAuthImport
+    }
+    '/_authenticated/profile/orders/$id': {
+      id: '/_authenticated/profile/orders/$id'
+      path: '/profile/orders/$id'
+      fullPath: '/profile/orders/$id'
+      preLoaderRoute: typeof AuthenticatedProfileOrdersIdImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/vendor/_auth/orders/$id': {
+      id: '/vendor/_auth/orders/$id'
+      path: '/orders/$id'
+      fullPath: '/vendor/orders/$id'
+      preLoaderRoute: typeof VendorAuthOrdersIdImport
+      parentRoute: typeof VendorAuthImport
+    }
+    '/vendor/_auth/products/$id': {
+      id: '/vendor/_auth/products/$id'
+      path: '/products/$id'
+      fullPath: '/vendor/products/$id'
+      preLoaderRoute: typeof VendorAuthProductsIdImport
+      parentRoute: typeof VendorAuthImport
+    }
+    '/_authenticated/profile/wallet/': {
+      id: '/_authenticated/profile/wallet/'
+      path: '/profile/wallet'
+      fullPath: '/profile/wallet'
+      preLoaderRoute: typeof AuthenticatedProfileWalletIndexImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/profile/wishlist/': {
+      id: '/_authenticated/profile/wishlist/'
+      path: '/profile/wishlist'
+      fullPath: '/profile/wishlist'
+      preLoaderRoute: typeof AuthenticatedProfileWishlistIndexImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/admin/_procted/coupon/': {
+      id: '/admin/_procted/coupon/'
+      path: '/coupon'
+      fullPath: '/admin/coupon'
+      preLoaderRoute: typeof AdminProctedCouponIndexImport
+      parentRoute: typeof AdminProctedImport
+    }
+    '/admin/_procted/offers/': {
+      id: '/admin/_procted/offers/'
+      path: '/offers'
+      fullPath: '/admin/offers'
+      preLoaderRoute: typeof AdminProctedOffersIndexImport
+      parentRoute: typeof AdminProctedImport
+    }
+    '/admin/_procted/vendor/': {
+      id: '/admin/_procted/vendor/'
       path: '/vendor'
-      fullPath: '/vendor'
-      preLoaderRoute: typeof VendorIndexLazyImport
-      parentRoute: typeof rootRoute
+      fullPath: '/admin/vendor'
+      preLoaderRoute: typeof AdminProctedVendorIndexImport
+      parentRoute: typeof AdminProctedImport
     }
-    '/vendor/products/': {
-      id: '/vendor/products/'
-      path: '/vendor/products'
+    '/vendor/_auth/orders/': {
+      id: '/vendor/_auth/orders/'
+      path: '/orders'
+      fullPath: '/vendor/orders'
+      preLoaderRoute: typeof VendorAuthOrdersIndexImport
+      parentRoute: typeof VendorAuthImport
+    }
+    '/vendor/_auth/profile/': {
+      id: '/vendor/_auth/profile/'
+      path: '/profile'
+      fullPath: '/vendor/profile'
+      preLoaderRoute: typeof VendorAuthProfileIndexImport
+      parentRoute: typeof VendorAuthImport
+    }
+    '/vendor/_auth/wallet/': {
+      id: '/vendor/_auth/wallet/'
+      path: '/wallet'
+      fullPath: '/vendor/wallet'
+      preLoaderRoute: typeof VendorAuthWalletIndexImport
+      parentRoute: typeof VendorAuthImport
+    }
+    '/_authenticated/profile/orders/': {
+      id: '/_authenticated/profile/orders/'
+      path: '/profile/orders'
+      fullPath: '/profile/orders'
+      preLoaderRoute: typeof AuthenticatedProfileOrdersIndexLazyImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/admin/_procted/category/': {
+      id: '/admin/_procted/category/'
+      path: '/category'
+      fullPath: '/admin/category'
+      preLoaderRoute: typeof AdminProctedCategoryIndexLazyImport
+      parentRoute: typeof AdminProctedImport
+    }
+    '/admin/_procted/product/': {
+      id: '/admin/_procted/product/'
+      path: '/product'
+      fullPath: '/admin/product'
+      preLoaderRoute: typeof AdminProctedProductIndexLazyImport
+      parentRoute: typeof AdminProctedImport
+    }
+    '/admin/_procted/users/': {
+      id: '/admin/_procted/users/'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AdminProctedUsersIndexLazyImport
+      parentRoute: typeof AdminProctedImport
+    }
+    '/vendor/_auth/products/': {
+      id: '/vendor/_auth/products/'
+      path: '/products'
       fullPath: '/vendor/products'
-      preLoaderRoute: typeof VendorProductsIndexLazyImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof VendorAuthProductsIndexLazyImport
+      parentRoute: typeof VendorAuthImport
     }
   }
 }
 
 // Create and export the route tree
 
+interface AuthenticatedRouteChildren {
+  AuthenticatedOrderFaliureRoute: typeof AuthenticatedOrderFaliureRoute
+  AuthenticatedShopRoute: typeof AuthenticatedShopRoute
+  AuthenticatedCartLazyRoute: typeof AuthenticatedCartLazyRoute
+  AuthenticatedCheckoutLazyRoute: typeof AuthenticatedCheckoutLazyRoute
+  AuthenticatedOrderLazyRoute: typeof AuthenticatedOrderLazyRoute
+  AuthenticatedProductsIdRoute: typeof AuthenticatedProductsIdRoute
+  AuthenticatedProfileAddressLazyRoute: typeof AuthenticatedProfileAddressLazyRoute
+  AuthenticatedProfileUserLazyRoute: typeof AuthenticatedProfileUserLazyRoute
+  AuthenticatedProfileOrdersIdRoute: typeof AuthenticatedProfileOrdersIdRoute
+  AuthenticatedProfileWalletIndexRoute: typeof AuthenticatedProfileWalletIndexRoute
+  AuthenticatedProfileWishlistIndexRoute: typeof AuthenticatedProfileWishlistIndexRoute
+  AuthenticatedProfileOrdersIndexLazyRoute: typeof AuthenticatedProfileOrdersIndexLazyRoute
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedOrderFaliureRoute: AuthenticatedOrderFaliureRoute,
+  AuthenticatedShopRoute: AuthenticatedShopRoute,
+  AuthenticatedCartLazyRoute: AuthenticatedCartLazyRoute,
+  AuthenticatedCheckoutLazyRoute: AuthenticatedCheckoutLazyRoute,
+  AuthenticatedOrderLazyRoute: AuthenticatedOrderLazyRoute,
+  AuthenticatedProductsIdRoute: AuthenticatedProductsIdRoute,
+  AuthenticatedProfileAddressLazyRoute: AuthenticatedProfileAddressLazyRoute,
+  AuthenticatedProfileUserLazyRoute: AuthenticatedProfileUserLazyRoute,
+  AuthenticatedProfileOrdersIdRoute: AuthenticatedProfileOrdersIdRoute,
+  AuthenticatedProfileWalletIndexRoute: AuthenticatedProfileWalletIndexRoute,
+  AuthenticatedProfileWishlistIndexRoute:
+    AuthenticatedProfileWishlistIndexRoute,
+  AuthenticatedProfileOrdersIndexLazyRoute:
+    AuthenticatedProfileOrdersIndexLazyRoute,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
+
+interface AdminProctedRouteChildren {
+  AdminProctedIndexRoute: typeof AdminProctedIndexRoute
+  AdminProctedCouponIndexRoute: typeof AdminProctedCouponIndexRoute
+  AdminProctedOffersIndexRoute: typeof AdminProctedOffersIndexRoute
+  AdminProctedVendorIndexRoute: typeof AdminProctedVendorIndexRoute
+  AdminProctedCategoryIndexLazyRoute: typeof AdminProctedCategoryIndexLazyRoute
+  AdminProctedProductIndexLazyRoute: typeof AdminProctedProductIndexLazyRoute
+  AdminProctedUsersIndexLazyRoute: typeof AdminProctedUsersIndexLazyRoute
+}
+
+const AdminProctedRouteChildren: AdminProctedRouteChildren = {
+  AdminProctedIndexRoute: AdminProctedIndexRoute,
+  AdminProctedCouponIndexRoute: AdminProctedCouponIndexRoute,
+  AdminProctedOffersIndexRoute: AdminProctedOffersIndexRoute,
+  AdminProctedVendorIndexRoute: AdminProctedVendorIndexRoute,
+  AdminProctedCategoryIndexLazyRoute: AdminProctedCategoryIndexLazyRoute,
+  AdminProctedProductIndexLazyRoute: AdminProctedProductIndexLazyRoute,
+  AdminProctedUsersIndexLazyRoute: AdminProctedUsersIndexLazyRoute,
+}
+
+const AdminProctedRouteWithChildren = AdminProctedRoute._addFileChildren(
+  AdminProctedRouteChildren,
+)
+
+interface AdminRouteChildren {
+  AdminProctedRoute: typeof AdminProctedRouteWithChildren
+  AdminLoginRoute: typeof AdminLoginRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminProctedRoute: AdminProctedRouteWithChildren,
+  AdminLoginRoute: AdminLoginRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
+interface VendorAuthRouteChildren {
+  VendorAuthIndexRoute: typeof VendorAuthIndexRoute
+  VendorAuthOrdersIdRoute: typeof VendorAuthOrdersIdRoute
+  VendorAuthProductsIdRoute: typeof VendorAuthProductsIdRoute
+  VendorAuthOrdersIndexRoute: typeof VendorAuthOrdersIndexRoute
+  VendorAuthProfileIndexRoute: typeof VendorAuthProfileIndexRoute
+  VendorAuthWalletIndexRoute: typeof VendorAuthWalletIndexRoute
+  VendorAuthProductsIndexLazyRoute: typeof VendorAuthProductsIndexLazyRoute
+}
+
+const VendorAuthRouteChildren: VendorAuthRouteChildren = {
+  VendorAuthIndexRoute: VendorAuthIndexRoute,
+  VendorAuthOrdersIdRoute: VendorAuthOrdersIdRoute,
+  VendorAuthProductsIdRoute: VendorAuthProductsIdRoute,
+  VendorAuthOrdersIndexRoute: VendorAuthOrdersIndexRoute,
+  VendorAuthProfileIndexRoute: VendorAuthProfileIndexRoute,
+  VendorAuthWalletIndexRoute: VendorAuthWalletIndexRoute,
+  VendorAuthProductsIndexLazyRoute: VendorAuthProductsIndexLazyRoute,
+}
+
+const VendorAuthRouteWithChildren = VendorAuthRoute._addFileChildren(
+  VendorAuthRouteChildren,
+)
+
+interface VendorRouteChildren {
+  VendorAuthRoute: typeof VendorAuthRouteWithChildren
+  VendorForgotRoute: typeof VendorForgotRoute
+  VendorForgotOtpRoute: typeof VendorForgotOtpRoute
+  VendorForgotPasswordRoute: typeof VendorForgotPasswordRoute
+  VendorLoginRoute: typeof VendorLoginRoute
+  VendorPrivacyRoute: typeof VendorPrivacyRoute
+  VendorSignupRoute: typeof VendorSignupRoute
+  VendorTermsRoute: typeof VendorTermsRoute
+  VendorOtpLazyRoute: typeof VendorOtpLazyRoute
+}
+
+const VendorRouteChildren: VendorRouteChildren = {
+  VendorAuthRoute: VendorAuthRouteWithChildren,
+  VendorForgotRoute: VendorForgotRoute,
+  VendorForgotOtpRoute: VendorForgotOtpRoute,
+  VendorForgotPasswordRoute: VendorForgotPasswordRoute,
+  VendorLoginRoute: VendorLoginRoute,
+  VendorPrivacyRoute: VendorPrivacyRoute,
+  VendorSignupRoute: VendorSignupRoute,
+  VendorTermsRoute: VendorTermsRoute,
+  VendorOtpLazyRoute: VendorOtpLazyRoute,
+}
+
+const VendorRouteWithChildren =
+  VendorRoute._addFileChildren(VendorRouteChildren)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/login': typeof LoginLazyRoute
-  '/shop': typeof ShopLazyRoute
-  '/signup': typeof SignupLazyRoute
-  '/vendor/login': typeof VendorLoginLazyRoute
-  '/vendor/signup': typeof VendorSignupLazyRoute
-  '/vendor': typeof VendorIndexLazyRoute
-  '/vendor/products': typeof VendorProductsIndexLazyRoute
+  '': typeof NotFoundRoute
+  '/forgot-password-otp': typeof ForgotPasswordOtpRoute
+  '/login': typeof LoginRoute
+  '/otp': typeof OtpRoute
+  '/payment': typeof PaymentRoute
+  '/signup': typeof SignupRoute
+  '/vendor-landing': typeof VendorLandingRoute
+  '/category': typeof CategoryLazyRoute
+  '/forgot': typeof ForgotLazyRoute
+  '/password': typeof PasswordLazyRoute
+  '/order-faliure': typeof AuthenticatedOrderFaliureRoute
+  '/shop': typeof AuthenticatedShopRoute
+  '/admin': typeof AdminProctedRouteWithChildren
+  '/admin/login': typeof AdminLoginRoute
+  '/vendor': typeof VendorAuthRouteWithChildren
+  '/vendor/forgot': typeof VendorForgotRoute
+  '/vendor/forgot-otp': typeof VendorForgotOtpRoute
+  '/vendor/forgot-password': typeof VendorForgotPasswordRoute
+  '/vendor/login': typeof VendorLoginRoute
+  '/vendor/privacy': typeof VendorPrivacyRoute
+  '/vendor/signup': typeof VendorSignupRoute
+  '/vendor/terms': typeof VendorTermsRoute
+  '/cart': typeof AuthenticatedCartLazyRoute
+  '/checkout': typeof AuthenticatedCheckoutLazyRoute
+  '/order': typeof AuthenticatedOrderLazyRoute
+  '/vendor/otp': typeof VendorOtpLazyRoute
+  '/products/$id': typeof AuthenticatedProductsIdRoute
+  '/profile/address': typeof AuthenticatedProfileAddressLazyRoute
+  '/profile/user': typeof AuthenticatedProfileUserLazyRoute
+  '/admin/': typeof AdminProctedIndexRoute
+  '/vendor/': typeof VendorAuthIndexRoute
+  '/profile/orders/$id': typeof AuthenticatedProfileOrdersIdRoute
+  '/vendor/orders/$id': typeof VendorAuthOrdersIdRoute
+  '/vendor/products/$id': typeof VendorAuthProductsIdRoute
+  '/profile/wallet': typeof AuthenticatedProfileWalletIndexRoute
+  '/profile/wishlist': typeof AuthenticatedProfileWishlistIndexRoute
+  '/admin/coupon': typeof AdminProctedCouponIndexRoute
+  '/admin/offers': typeof AdminProctedOffersIndexRoute
+  '/admin/vendor': typeof AdminProctedVendorIndexRoute
+  '/vendor/orders': typeof VendorAuthOrdersIndexRoute
+  '/vendor/profile': typeof VendorAuthProfileIndexRoute
+  '/vendor/wallet': typeof VendorAuthWalletIndexRoute
+  '/profile/orders': typeof AuthenticatedProfileOrdersIndexLazyRoute
+  '/admin/category': typeof AdminProctedCategoryIndexLazyRoute
+  '/admin/product': typeof AdminProctedProductIndexLazyRoute
+  '/admin/users': typeof AdminProctedUsersIndexLazyRoute
+  '/vendor/products': typeof VendorAuthProductsIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/login': typeof LoginLazyRoute
-  '/shop': typeof ShopLazyRoute
-  '/signup': typeof SignupLazyRoute
-  '/vendor/login': typeof VendorLoginLazyRoute
-  '/vendor/signup': typeof VendorSignupLazyRoute
-  '/vendor': typeof VendorIndexLazyRoute
-  '/vendor/products': typeof VendorProductsIndexLazyRoute
+  '': typeof NotFoundRoute
+  '/forgot-password-otp': typeof ForgotPasswordOtpRoute
+  '/login': typeof LoginRoute
+  '/otp': typeof OtpRoute
+  '/payment': typeof PaymentRoute
+  '/signup': typeof SignupRoute
+  '/vendor-landing': typeof VendorLandingRoute
+  '/category': typeof CategoryLazyRoute
+  '/forgot': typeof ForgotLazyRoute
+  '/password': typeof PasswordLazyRoute
+  '/order-faliure': typeof AuthenticatedOrderFaliureRoute
+  '/shop': typeof AuthenticatedShopRoute
+  '/admin': typeof AdminProctedIndexRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/vendor': typeof VendorAuthIndexRoute
+  '/vendor/forgot': typeof VendorForgotRoute
+  '/vendor/forgot-otp': typeof VendorForgotOtpRoute
+  '/vendor/forgot-password': typeof VendorForgotPasswordRoute
+  '/vendor/login': typeof VendorLoginRoute
+  '/vendor/privacy': typeof VendorPrivacyRoute
+  '/vendor/signup': typeof VendorSignupRoute
+  '/vendor/terms': typeof VendorTermsRoute
+  '/cart': typeof AuthenticatedCartLazyRoute
+  '/checkout': typeof AuthenticatedCheckoutLazyRoute
+  '/order': typeof AuthenticatedOrderLazyRoute
+  '/vendor/otp': typeof VendorOtpLazyRoute
+  '/products/$id': typeof AuthenticatedProductsIdRoute
+  '/profile/address': typeof AuthenticatedProfileAddressLazyRoute
+  '/profile/user': typeof AuthenticatedProfileUserLazyRoute
+  '/profile/orders/$id': typeof AuthenticatedProfileOrdersIdRoute
+  '/vendor/orders/$id': typeof VendorAuthOrdersIdRoute
+  '/vendor/products/$id': typeof VendorAuthProductsIdRoute
+  '/profile/wallet': typeof AuthenticatedProfileWalletIndexRoute
+  '/profile/wishlist': typeof AuthenticatedProfileWishlistIndexRoute
+  '/admin/coupon': typeof AdminProctedCouponIndexRoute
+  '/admin/offers': typeof AdminProctedOffersIndexRoute
+  '/admin/vendor': typeof AdminProctedVendorIndexRoute
+  '/vendor/orders': typeof VendorAuthOrdersIndexRoute
+  '/vendor/profile': typeof VendorAuthProfileIndexRoute
+  '/vendor/wallet': typeof VendorAuthWalletIndexRoute
+  '/profile/orders': typeof AuthenticatedProfileOrdersIndexLazyRoute
+  '/admin/category': typeof AdminProctedCategoryIndexLazyRoute
+  '/admin/product': typeof AdminProctedProductIndexLazyRoute
+  '/admin/users': typeof AdminProctedUsersIndexLazyRoute
+  '/vendor/products': typeof VendorAuthProductsIndexLazyRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/login': typeof LoginLazyRoute
-  '/shop': typeof ShopLazyRoute
-  '/signup': typeof SignupLazyRoute
-  '/vendor/login': typeof VendorLoginLazyRoute
-  '/vendor/signup': typeof VendorSignupLazyRoute
-  '/vendor/': typeof VendorIndexLazyRoute
-  '/vendor/products/': typeof VendorProductsIndexLazyRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/_not-found': typeof NotFoundRoute
+  '/forgot-password-otp': typeof ForgotPasswordOtpRoute
+  '/login': typeof LoginRoute
+  '/otp': typeof OtpRoute
+  '/payment': typeof PaymentRoute
+  '/signup': typeof SignupRoute
+  '/vendor-landing': typeof VendorLandingRoute
+  '/category': typeof CategoryLazyRoute
+  '/forgot': typeof ForgotLazyRoute
+  '/password': typeof PasswordLazyRoute
+  '/_authenticated/order-faliure': typeof AuthenticatedOrderFaliureRoute
+  '/_authenticated/shop': typeof AuthenticatedShopRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/admin/_procted': typeof AdminProctedRouteWithChildren
+  '/admin/login': typeof AdminLoginRoute
+  '/vendor': typeof VendorRouteWithChildren
+  '/vendor/_auth': typeof VendorAuthRouteWithChildren
+  '/vendor/forgot': typeof VendorForgotRoute
+  '/vendor/forgot-otp': typeof VendorForgotOtpRoute
+  '/vendor/forgot-password': typeof VendorForgotPasswordRoute
+  '/vendor/login': typeof VendorLoginRoute
+  '/vendor/privacy': typeof VendorPrivacyRoute
+  '/vendor/signup': typeof VendorSignupRoute
+  '/vendor/terms': typeof VendorTermsRoute
+  '/_authenticated/cart': typeof AuthenticatedCartLazyRoute
+  '/_authenticated/checkout': typeof AuthenticatedCheckoutLazyRoute
+  '/_authenticated/order': typeof AuthenticatedOrderLazyRoute
+  '/vendor/otp': typeof VendorOtpLazyRoute
+  '/_authenticated/products/$id': typeof AuthenticatedProductsIdRoute
+  '/_authenticated/profile/address': typeof AuthenticatedProfileAddressLazyRoute
+  '/_authenticated/profile/user': typeof AuthenticatedProfileUserLazyRoute
+  '/admin/_procted/': typeof AdminProctedIndexRoute
+  '/vendor/_auth/': typeof VendorAuthIndexRoute
+  '/_authenticated/profile/orders/$id': typeof AuthenticatedProfileOrdersIdRoute
+  '/vendor/_auth/orders/$id': typeof VendorAuthOrdersIdRoute
+  '/vendor/_auth/products/$id': typeof VendorAuthProductsIdRoute
+  '/_authenticated/profile/wallet/': typeof AuthenticatedProfileWalletIndexRoute
+  '/_authenticated/profile/wishlist/': typeof AuthenticatedProfileWishlistIndexRoute
+  '/admin/_procted/coupon/': typeof AdminProctedCouponIndexRoute
+  '/admin/_procted/offers/': typeof AdminProctedOffersIndexRoute
+  '/admin/_procted/vendor/': typeof AdminProctedVendorIndexRoute
+  '/vendor/_auth/orders/': typeof VendorAuthOrdersIndexRoute
+  '/vendor/_auth/profile/': typeof VendorAuthProfileIndexRoute
+  '/vendor/_auth/wallet/': typeof VendorAuthWalletIndexRoute
+  '/_authenticated/profile/orders/': typeof AuthenticatedProfileOrdersIndexLazyRoute
+  '/admin/_procted/category/': typeof AdminProctedCategoryIndexLazyRoute
+  '/admin/_procted/product/': typeof AdminProctedProductIndexLazyRoute
+  '/admin/_procted/users/': typeof AdminProctedUsersIndexLazyRoute
+  '/vendor/_auth/products/': typeof VendorAuthProductsIndexLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | ''
+    | '/forgot-password-otp'
     | '/login'
-    | '/shop'
+    | '/otp'
+    | '/payment'
     | '/signup'
-    | '/vendor/login'
-    | '/vendor/signup'
+    | '/vendor-landing'
+    | '/category'
+    | '/forgot'
+    | '/password'
+    | '/order-faliure'
+    | '/shop'
+    | '/admin'
+    | '/admin/login'
     | '/vendor'
+    | '/vendor/forgot'
+    | '/vendor/forgot-otp'
+    | '/vendor/forgot-password'
+    | '/vendor/login'
+    | '/vendor/privacy'
+    | '/vendor/signup'
+    | '/vendor/terms'
+    | '/cart'
+    | '/checkout'
+    | '/order'
+    | '/vendor/otp'
+    | '/products/$id'
+    | '/profile/address'
+    | '/profile/user'
+    | '/admin/'
+    | '/vendor/'
+    | '/profile/orders/$id'
+    | '/vendor/orders/$id'
+    | '/vendor/products/$id'
+    | '/profile/wallet'
+    | '/profile/wishlist'
+    | '/admin/coupon'
+    | '/admin/offers'
+    | '/admin/vendor'
+    | '/vendor/orders'
+    | '/vendor/profile'
+    | '/vendor/wallet'
+    | '/profile/orders'
+    | '/admin/category'
+    | '/admin/product'
+    | '/admin/users'
     | '/vendor/products'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | ''
+    | '/forgot-password-otp'
     | '/login'
-    | '/shop'
+    | '/otp'
+    | '/payment'
     | '/signup'
-    | '/vendor/login'
-    | '/vendor/signup'
+    | '/vendor-landing'
+    | '/category'
+    | '/forgot'
+    | '/password'
+    | '/order-faliure'
+    | '/shop'
+    | '/admin'
+    | '/admin/login'
     | '/vendor'
+    | '/vendor/forgot'
+    | '/vendor/forgot-otp'
+    | '/vendor/forgot-password'
+    | '/vendor/login'
+    | '/vendor/privacy'
+    | '/vendor/signup'
+    | '/vendor/terms'
+    | '/cart'
+    | '/checkout'
+    | '/order'
+    | '/vendor/otp'
+    | '/products/$id'
+    | '/profile/address'
+    | '/profile/user'
+    | '/profile/orders/$id'
+    | '/vendor/orders/$id'
+    | '/vendor/products/$id'
+    | '/profile/wallet'
+    | '/profile/wishlist'
+    | '/admin/coupon'
+    | '/admin/offers'
+    | '/admin/vendor'
+    | '/vendor/orders'
+    | '/vendor/profile'
+    | '/vendor/wallet'
+    | '/profile/orders'
+    | '/admin/category'
+    | '/admin/product'
+    | '/admin/users'
     | '/vendor/products'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
+    | '/_not-found'
+    | '/forgot-password-otp'
     | '/login'
-    | '/shop'
+    | '/otp'
+    | '/payment'
     | '/signup'
+    | '/vendor-landing'
+    | '/category'
+    | '/forgot'
+    | '/password'
+    | '/_authenticated/order-faliure'
+    | '/_authenticated/shop'
+    | '/admin'
+    | '/admin/_procted'
+    | '/admin/login'
+    | '/vendor'
+    | '/vendor/_auth'
+    | '/vendor/forgot'
+    | '/vendor/forgot-otp'
+    | '/vendor/forgot-password'
     | '/vendor/login'
+    | '/vendor/privacy'
     | '/vendor/signup'
-    | '/vendor/'
-    | '/vendor/products/'
+    | '/vendor/terms'
+    | '/_authenticated/cart'
+    | '/_authenticated/checkout'
+    | '/_authenticated/order'
+    | '/vendor/otp'
+    | '/_authenticated/products/$id'
+    | '/_authenticated/profile/address'
+    | '/_authenticated/profile/user'
+    | '/admin/_procted/'
+    | '/vendor/_auth/'
+    | '/_authenticated/profile/orders/$id'
+    | '/vendor/_auth/orders/$id'
+    | '/vendor/_auth/products/$id'
+    | '/_authenticated/profile/wallet/'
+    | '/_authenticated/profile/wishlist/'
+    | '/admin/_procted/coupon/'
+    | '/admin/_procted/offers/'
+    | '/admin/_procted/vendor/'
+    | '/vendor/_auth/orders/'
+    | '/vendor/_auth/profile/'
+    | '/vendor/_auth/wallet/'
+    | '/_authenticated/profile/orders/'
+    | '/admin/_procted/category/'
+    | '/admin/_procted/product/'
+    | '/admin/_procted/users/'
+    | '/vendor/_auth/products/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  LoginLazyRoute: typeof LoginLazyRoute
-  ShopLazyRoute: typeof ShopLazyRoute
-  SignupLazyRoute: typeof SignupLazyRoute
-  VendorLoginLazyRoute: typeof VendorLoginLazyRoute
-  VendorSignupLazyRoute: typeof VendorSignupLazyRoute
-  VendorIndexLazyRoute: typeof VendorIndexLazyRoute
-  VendorProductsIndexLazyRoute: typeof VendorProductsIndexLazyRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  NotFoundRoute: typeof NotFoundRoute
+  ForgotPasswordOtpRoute: typeof ForgotPasswordOtpRoute
+  LoginRoute: typeof LoginRoute
+  OtpRoute: typeof OtpRoute
+  PaymentRoute: typeof PaymentRoute
+  SignupRoute: typeof SignupRoute
+  VendorLandingRoute: typeof VendorLandingRoute
+  CategoryLazyRoute: typeof CategoryLazyRoute
+  ForgotLazyRoute: typeof ForgotLazyRoute
+  PasswordLazyRoute: typeof PasswordLazyRoute
+  AdminRoute: typeof AdminRouteWithChildren
+  VendorRoute: typeof VendorRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  LoginLazyRoute: LoginLazyRoute,
-  ShopLazyRoute: ShopLazyRoute,
-  SignupLazyRoute: SignupLazyRoute,
-  VendorLoginLazyRoute: VendorLoginLazyRoute,
-  VendorSignupLazyRoute: VendorSignupLazyRoute,
-  VendorIndexLazyRoute: VendorIndexLazyRoute,
-  VendorProductsIndexLazyRoute: VendorProductsIndexLazyRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  NotFoundRoute: NotFoundRoute,
+  ForgotPasswordOtpRoute: ForgotPasswordOtpRoute,
+  LoginRoute: LoginRoute,
+  OtpRoute: OtpRoute,
+  PaymentRoute: PaymentRoute,
+  SignupRoute: SignupRoute,
+  VendorLandingRoute: VendorLandingRoute,
+  CategoryLazyRoute: CategoryLazyRoute,
+  ForgotLazyRoute: ForgotLazyRoute,
+  PasswordLazyRoute: PasswordLazyRoute,
+  AdminRoute: AdminRouteWithChildren,
+  VendorRoute: VendorRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -243,38 +1265,257 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/_authenticated",
+        "/_not-found",
+        "/forgot-password-otp",
         "/login",
-        "/shop",
+        "/otp",
+        "/payment",
         "/signup",
-        "/vendor/login",
-        "/vendor/signup",
-        "/vendor/",
-        "/vendor/products/"
+        "/vendor-landing",
+        "/category",
+        "/forgot",
+        "/password",
+        "/admin",
+        "/vendor"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/login": {
-      "filePath": "login.lazy.tsx"
+    "/_authenticated": {
+      "filePath": "_authenticated.tsx",
+      "children": [
+        "/_authenticated/order-faliure",
+        "/_authenticated/shop",
+        "/_authenticated/cart",
+        "/_authenticated/checkout",
+        "/_authenticated/order",
+        "/_authenticated/products/$id",
+        "/_authenticated/profile/address",
+        "/_authenticated/profile/user",
+        "/_authenticated/profile/orders/$id",
+        "/_authenticated/profile/wallet/",
+        "/_authenticated/profile/wishlist/",
+        "/_authenticated/profile/orders/"
+      ]
     },
-    "/shop": {
-      "filePath": "shop.lazy.tsx"
+    "/_not-found": {
+      "filePath": "_not-found.tsx"
+    },
+    "/forgot-password-otp": {
+      "filePath": "forgot-password-otp.tsx"
+    },
+    "/login": {
+      "filePath": "login.tsx"
+    },
+    "/otp": {
+      "filePath": "otp.tsx"
+    },
+    "/payment": {
+      "filePath": "payment.tsx"
     },
     "/signup": {
-      "filePath": "signup.lazy.tsx"
+      "filePath": "signup.tsx"
+    },
+    "/vendor-landing": {
+      "filePath": "vendor-landing.tsx"
+    },
+    "/category": {
+      "filePath": "category.lazy.tsx"
+    },
+    "/forgot": {
+      "filePath": "forgot.lazy.tsx"
+    },
+    "/password": {
+      "filePath": "password.lazy.tsx"
+    },
+    "/_authenticated/order-faliure": {
+      "filePath": "_authenticated/order-faliure.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/shop": {
+      "filePath": "_authenticated/shop.tsx",
+      "parent": "/_authenticated"
+    },
+    "/admin": {
+      "filePath": "admin",
+      "children": [
+        "/admin/_procted",
+        "/admin/login"
+      ]
+    },
+    "/admin/_procted": {
+      "filePath": "admin/_procted.tsx",
+      "parent": "/admin",
+      "children": [
+        "/admin/_procted/",
+        "/admin/_procted/coupon/",
+        "/admin/_procted/offers/",
+        "/admin/_procted/vendor/",
+        "/admin/_procted/category/",
+        "/admin/_procted/product/",
+        "/admin/_procted/users/"
+      ]
+    },
+    "/admin/login": {
+      "filePath": "admin/login.tsx",
+      "parent": "/admin"
+    },
+    "/vendor": {
+      "filePath": "vendor",
+      "children": [
+        "/vendor/_auth",
+        "/vendor/forgot",
+        "/vendor/forgot-otp",
+        "/vendor/forgot-password",
+        "/vendor/login",
+        "/vendor/privacy",
+        "/vendor/signup",
+        "/vendor/terms",
+        "/vendor/otp"
+      ]
+    },
+    "/vendor/_auth": {
+      "filePath": "vendor/_auth.tsx",
+      "parent": "/vendor",
+      "children": [
+        "/vendor/_auth/",
+        "/vendor/_auth/orders/$id",
+        "/vendor/_auth/products/$id",
+        "/vendor/_auth/orders/",
+        "/vendor/_auth/profile/",
+        "/vendor/_auth/wallet/",
+        "/vendor/_auth/products/"
+      ]
+    },
+    "/vendor/forgot": {
+      "filePath": "vendor/forgot.tsx",
+      "parent": "/vendor"
+    },
+    "/vendor/forgot-otp": {
+      "filePath": "vendor/forgot-otp.tsx",
+      "parent": "/vendor"
+    },
+    "/vendor/forgot-password": {
+      "filePath": "vendor/forgot-password.tsx",
+      "parent": "/vendor"
     },
     "/vendor/login": {
-      "filePath": "vendor/login.lazy.tsx"
+      "filePath": "vendor/login.tsx",
+      "parent": "/vendor"
+    },
+    "/vendor/privacy": {
+      "filePath": "vendor/privacy.tsx",
+      "parent": "/vendor"
     },
     "/vendor/signup": {
-      "filePath": "vendor/signup.lazy.tsx"
+      "filePath": "vendor/signup.tsx",
+      "parent": "/vendor"
     },
-    "/vendor/": {
-      "filePath": "vendor/index.lazy.tsx"
+    "/vendor/terms": {
+      "filePath": "vendor/terms.tsx",
+      "parent": "/vendor"
     },
-    "/vendor/products/": {
-      "filePath": "vendor/products/index.lazy.tsx"
+    "/_authenticated/cart": {
+      "filePath": "_authenticated/cart.lazy.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/checkout": {
+      "filePath": "_authenticated/checkout.lazy.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/order": {
+      "filePath": "_authenticated/order.lazy.tsx",
+      "parent": "/_authenticated"
+    },
+    "/vendor/otp": {
+      "filePath": "vendor/otp.lazy.tsx",
+      "parent": "/vendor"
+    },
+    "/_authenticated/products/$id": {
+      "filePath": "_authenticated/products.$id.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/profile/address": {
+      "filePath": "_authenticated/profile/address.lazy.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/profile/user": {
+      "filePath": "_authenticated/profile/user.lazy.tsx",
+      "parent": "/_authenticated"
+    },
+    "/admin/_procted/": {
+      "filePath": "admin/_procted/index.tsx",
+      "parent": "/admin/_procted"
+    },
+    "/vendor/_auth/": {
+      "filePath": "vendor/_auth/index.tsx",
+      "parent": "/vendor/_auth"
+    },
+    "/_authenticated/profile/orders/$id": {
+      "filePath": "_authenticated/profile/orders/$id.tsx",
+      "parent": "/_authenticated"
+    },
+    "/vendor/_auth/orders/$id": {
+      "filePath": "vendor/_auth/orders/$id.tsx",
+      "parent": "/vendor/_auth"
+    },
+    "/vendor/_auth/products/$id": {
+      "filePath": "vendor/_auth/products/$id.tsx",
+      "parent": "/vendor/_auth"
+    },
+    "/_authenticated/profile/wallet/": {
+      "filePath": "_authenticated/profile/wallet/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/profile/wishlist/": {
+      "filePath": "_authenticated/profile/wishlist/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/admin/_procted/coupon/": {
+      "filePath": "admin/_procted/coupon/index.tsx",
+      "parent": "/admin/_procted"
+    },
+    "/admin/_procted/offers/": {
+      "filePath": "admin/_procted/offers/index.tsx",
+      "parent": "/admin/_procted"
+    },
+    "/admin/_procted/vendor/": {
+      "filePath": "admin/_procted/vendor/index.tsx",
+      "parent": "/admin/_procted"
+    },
+    "/vendor/_auth/orders/": {
+      "filePath": "vendor/_auth/orders/index.tsx",
+      "parent": "/vendor/_auth"
+    },
+    "/vendor/_auth/profile/": {
+      "filePath": "vendor/_auth/profile/index.tsx",
+      "parent": "/vendor/_auth"
+    },
+    "/vendor/_auth/wallet/": {
+      "filePath": "vendor/_auth/wallet/index.tsx",
+      "parent": "/vendor/_auth"
+    },
+    "/_authenticated/profile/orders/": {
+      "filePath": "_authenticated/profile/orders/index.lazy.tsx",
+      "parent": "/_authenticated"
+    },
+    "/admin/_procted/category/": {
+      "filePath": "admin/_procted/category/index.lazy.tsx",
+      "parent": "/admin/_procted"
+    },
+    "/admin/_procted/product/": {
+      "filePath": "admin/_procted/product/index.lazy.tsx",
+      "parent": "/admin/_procted"
+    },
+    "/admin/_procted/users/": {
+      "filePath": "admin/_procted/users/index.lazy.tsx",
+      "parent": "/admin/_procted"
+    },
+    "/vendor/_auth/products/": {
+      "filePath": "vendor/_auth/products/index.lazy.tsx",
+      "parent": "/vendor/_auth"
     }
   }
 }
