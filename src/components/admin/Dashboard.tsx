@@ -167,7 +167,7 @@ export const DashboardContent: React.FC<DashboardContentProps> = ({ backendData 
               filterType={filterType} 
               startDate={startDate} 
               endDate={endDate} 
-              // orders={backendData.orders}
+              orders={backendData}
             />
           </CardContent>
         </Card>

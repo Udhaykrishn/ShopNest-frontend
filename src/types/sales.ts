@@ -1,6 +1,8 @@
 export interface TopProduct {
   productName: string;
   price: number;
+  orderedDate:string;
+  orderId:number,
   quantity: number;
   image: string;
   total: number,

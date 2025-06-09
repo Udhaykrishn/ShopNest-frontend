@@ -9,8 +9,8 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import { BackendData } from '@/types';
 
-// Register Chart.js components for line chart
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 interface RevenueChartProps {
@@ -25,33 +25,40 @@ interface RevenueChartProps {
   filterType: string;
   startDate?: string;
   endDate?: string;
-  orders?: { createdAt: string; total: number }[]; // Added to handle actual order data
+  orders?: Pick<BackendData, 'topProducts'>;
 }
 
-export const RevenueChart: React.FC<RevenueChartProps> = ({ revenueData, filterType, startDate, endDate, orders = [] }) => {
-  // Helper function to generate date labels and data
+export const RevenueChart: React.FC<RevenueChartProps> = ({ revenueData, filterType, startDate, endDate, orders = { topProducts: [] } }) => {
   const getChartData = () => {
     let labels: string[] = [];
     let data: number[] = [];
 
-    // Fallback date if startDate is undefined or invalid
     const fallbackDate = new Date('2025-06-01');
-    const validStartDate = startDate && !isNaN(new Date(startDate).getTime()) 
-      ? new Date(startDate) 
+    const validStartDate = startDate && !isNaN(new Date(startDate).getTime())
+      ? new Date(startDate)
       : fallbackDate;
 
     if (filterType === 'daily' && startDate) {
       labels = Array.from({ length: 24 }, (_, i) => `${i.toString().padStart(2, '0')}:00`);
       data = Array(24).fill(revenueData.daily / 24);
-    } else if (filterType === 'weekly') {
-      const start = new Date('2025-06-01'); // Current week starts Sunday, June 1
+    } else if (filterType === 'weekly' && startDate) {
+      const start = validStartDate;
       labels = Array.from({ length: 7 }, (_, i) => {
         const date = new Date(start);
         date.setDate(start.getDate() + i);
         return date.toISOString().split('T')[0];
       });
-      data = Array(7).fill(revenueData.weekly / 7);
-    } else if (filterType === 'monthly') {
+      data = Array(7).fill(0);
+
+      orders.topProducts.forEach(product => {
+        const orderDate = new Date(product.orderedDate);
+        const dateStr = orderDate.toISOString().split('T')[0];
+        const index = labels.indexOf(dateStr);
+        if (index !== -1) {
+          data[index] += product.total;
+        }
+      });
+    } else if (filterType === 'monthly' && startDate) {
       const start = validStartDate;
       const daysInMonth = new Date(start.getFullYear(), start.getMonth() + 1, 0).getDate();
       labels = Array.from({ length: daysInMonth }, (_, i) => {
@@ -59,36 +66,48 @@ export const RevenueChart: React.FC<RevenueChartProps> = ({ revenueData, filterT
         date.setDate(start.getDate() + i + 1);
         return date.toISOString().split('T')[0];
       });
-      data = Array(daysInMonth).fill(revenueData.monthly / daysInMonth);
+      data = Array(daysInMonth).fill(0);
+
+      orders.topProducts.forEach(product => {
+        const orderDate = new Date(product.orderedDate);
+        const dateStr = orderDate.toISOString().split('T')[0];
+        const index = labels.indexOf(dateStr);
+        if (index !== -1) {
+          data[index] += product.total;
+        }
+      });
     } else if (filterType === 'yearly' && startDate) {
       labels = [
         'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
         'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
       ];
-      data = Array(12).fill(revenueData.yearly / 12);
+      data = Array(12).fill(0);
+
+      orders.topProducts.forEach(product => {
+        const orderDate = new Date(product.orderedDate);
+        const month = orderDate.getMonth();
+        data[month] += product.total;
+      });
     } else if (filterType === 'custom' && startDate && endDate) {
       const start = validStartDate;
-      const end = endDate && !isNaN(new Date(endDate).getTime()) 
-        ? new Date(endDate) 
+      const end = endDate && !isNaN(new Date(endDate).getTime())
+        ? new Date(endDate)
         : new Date(start.getTime() + 6 * 24 * 60 * 60 * 1000);
       const days = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
-      
-      // Generate labels for each day in the range
+
       labels = Array.from({ length: days }, (_, i) => {
         const date = new Date(start);
         date.setDate(start.getDate() + i);
         return date.toISOString().split('T')[0];
       });
-
-      // Initialize data array with zeros
       data = Array(days).fill(0);
 
-      // Map orders to their respective dates
-      orders.forEach(order => {
-        const orderDate = new Date(order.createdAt).toISOString().split('T')[0];
-        const index = labels.indexOf(orderDate);
+      orders.topProducts.forEach(product => {
+        const orderDate = new Date(product.orderedDate);
+        const dateStr = orderDate.toISOString().split('T')[0];
+        const index = labels.indexOf(dateStr);
         if (index !== -1) {
-          data[index] += order.total; // Add order revenue to the correct date
+          data[index] += product.total;
         }
       });
     } else {
@@ -108,10 +127,7 @@ export const RevenueChart: React.FC<RevenueChartProps> = ({ revenueData, filterT
 
   const { labels, data } = getChartData();
 
-  // Check for empty data in weekly, monthly, or custom filters
-  const isEmpty = (filterType === 'weekly' && revenueData.weekly === 0) || 
-                  (filterType === 'monthly' && revenueData.monthly === 0) ||
-                  (filterType === 'custom' && orders.length === 0);
+  const isEmpty = data.every(value => value === 0) || orders.topProducts.length === 0;
 
   if (isEmpty) {
     return (
@@ -152,9 +168,9 @@ export const RevenueChart: React.FC<RevenueChartProps> = ({ revenueData, filterT
       x: {
         title: {
           display: true,
-          text: filterType === 'daily' ? 'Time of Day' : 
-                filterType === 'weekly' || filterType === 'monthly' || filterType === 'custom' ? 'Date' : 
-                filterType === 'yearly' ? 'Month' : 'Filter Type',
+          text: filterType === 'daily' ? 'Time of Day' :
+            filterType === 'weekly' || filterType === 'monthly' || filterType === 'custom' ? 'Date' :
+            filterType === 'yearly' ? 'Month' : 'Filter Type',
         },
       },
     },

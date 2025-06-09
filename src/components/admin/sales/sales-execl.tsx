@@ -31,6 +31,15 @@ export const DownloadExcel: React.FC<DownloadExcelProps> = ({
         }
     };
 
+    const formatDate = (isoDate: string): string => {
+        try {
+            return new Date(isoDate).toISOString().split('T')[0];
+        } catch (error) {
+            console.error('Error formatting date:', error);
+            return isoDate;
+        }
+    };
+
     const downloadExcel = () => {
         const wb = XLSX.utils.book_new();
 
@@ -51,162 +60,85 @@ export const DownloadExcel: React.FC<DownloadExcelProps> = ({
             dateText = 'All Time';
         }
 
-        // Top Products Table (with additional fields)
-        const topProductsData = [
-            ['ShopNest Sales Report - Top Products'],
+        // Calculate summary metrics
+        const totalPrice = backendData.topProducts.reduce((sum, product) => sum + product.price, 0);
+        const totalRevenue = totalPrice * 0.1; // 10% of total price
+        const totalQuantity = backendData.topProducts.reduce((sum, product) => sum + product.quantity, 0);
+        const totalOrders = backendData.topProducts.length;
+
+        // Ordered Products Table
+        const orderedProductsData = [
+            ['ShopNest Sales Report - Ordered Products'],
             [`Filter: ${filterType.charAt(0).toUpperCase() + filterType.slice(1)}`],
             [dateText],
             [],
-            ['Product', 'Price', 'Quantity', 'Delivery Status', 'Total Sold'],
+            ['Order ID', 'Order Date', 'Product Name', 'Price', 'Quantity', 'Status'],
             ...backendData.topProducts.map((product) => [
+                product.orderId.toString(),
+                formatDate(product.orderedDate),
                 product.productName,
                 customFormatINR(product.price),
                 product.quantity.toString(),
                 product.status,
-                product.total.toString(),
             ]),
+            [], // Empty row before summary
+            ['Summary'],
+            ['Total Revenue', customFormatINR(totalRevenue)],
+            ['Total Quantity', totalQuantity.toString()],
+            ['Total Orders', totalOrders.toString()],
         ];
 
-        const wsProducts = XLSX.utils.aoa_to_sheet(topProductsData);
+        const wsProducts = XLSX.utils.aoa_to_sheet(orderedProductsData);
         wsProducts['!cols'] = [
-            { wch: 40 }, // Product
+            { wch: 20 }, // Order ID
+            { wch: 15 }, // Order Date
+            { wch: 40 }, // Product Name
             { wch: 20 }, // Price
             { wch: 15 }, // Quantity
-            { wch: 20 }, // Delivery Status
-            { wch: 20 }, // Total Sold
+            { wch: 15 }, // Status
         ];
 
+        // Apply border and alignment styling
         Object.keys(wsProducts).forEach((cell) => {
             const row = parseInt(cell.match(/\d+/)?.[0] || '0');
-            if (row === 1 || row === 2 || row === 3 || row === 5) {
-                // Title, Filter, Date, and Header
+            const borderStyle = {
+                top: { style: 'medium', color: { rgb: BLACK_COLOR.replace('#', '') } },
+                bottom: { style: 'medium', color: { rgb: BLACK_COLOR.replace('#', '') } },
+                left: { style: 'medium', color: { rgb: BLACK_COLOR.replace('#', '') } },
+                right: { style: 'medium', color: { rgb: BLACK_COLOR.replace('#', '') } },
+            };
+
+            if (row === 1 || row === 2 || row === 3 || row === 5 || row === orderedProductsData.length - 3) {
+                // Title, Filter, Date, Header, and Summary Title
                 wsProducts[cell].s = {
                     font: { bold: true, color: { rgb: PRIMARY_COLOR.replace('#', '') } },
                     fill: { fgColor: { rgb: 'E6F3E6' } }, // Light green background
-                    alignment: { horizontal: 'left' },
-                    border: {
-                        top: { style: 'thin', color: { rgb: BLACK_COLOR.replace('#', '') } },
-                        bottom: { style: 'thin', color: { rgb: BLACK_COLOR.replace('#', '') } },
-                        left: { style: 'thin', color: { rgb: BLACK_COLOR.replace('#', '') } },
-                        right: { style: 'thin', color: { rgb: BLACK_COLOR.replace('#', '') } },
-                    },
+                    alignment: { horizontal: 'left', vertical: 'center' },
+                    border: borderStyle,
                 };
-            } else if (row >= 6) {
+            } else if (row >= 6 && row < orderedProductsData.length - 3) {
                 // Data rows
                 wsProducts[cell].s = {
-                    alignment: { horizontal: cell.startsWith('A') || cell.startsWith('D') ? 'left' : 'right' },
-                    border: {
-                        top: { style: 'thin', color: { rgb: BLACK_COLOR.replace('#', '') } },
-                        bottom: { style: 'thin', color: { rgb: BLACK_COLOR.replace('#', '') } },
-                        left: { style: 'thin', color: { rgb: BLACK_COLOR.replace('#', '') } },
-                        right: { style: 'thin', color: { rgb: BLACK_COLOR.replace('#', '') } },
+                    alignment: {
+                        horizontal: cell.startsWith('A') || cell.startsWith('B') || cell.startsWith('C') ? 'left' : 'right',
+                        vertical: 'center',
                     },
+                    border: borderStyle,
+                };
+            } else if (row >= orderedProductsData.length - 2) {
+                // Summary rows
+                wsProducts[cell].s = {
+                    font: { bold: true },
+                    alignment: {
+                        horizontal: cell.startsWith('A') ? 'left' : 'right',
+                        vertical: 'center',
+                    },
+                    border: borderStyle,
                 };
             }
         });
-        XLSX.utils.book_append_sheet(wb, wsProducts, 'Top Products');
 
-        // Best Selling Categories Table
-        const categoriesData = [
-            ['ShopNest Sales Report - Best Selling Categories'],
-            [`Filter: ${filterType.charAt(0).toUpperCase() + filterType.slice(1)}`],
-            [dateText],
-            [],
-            ['Category', 'Total Revenue', 'Total Sold'],
-            ...backendData.bestSellCategory.map((category) => [
-                category.category,
-                customFormatINR(category.totalRevenue),
-                category.totalSold.toString(),
-            ]),
-        ];
-
-        const wsCategories = XLSX.utils.aoa_to_sheet(categoriesData);
-        wsCategories['!cols'] = [
-            { wch: 30 }, // Category
-            { wch: 20 }, // Total Revenue
-            { wch: 20 }, // Total Sold
-        ];
-
-        Object.keys(wsCategories).forEach((cell) => {
-            const row = parseInt(cell.match(/\d+/)?.[0] || '0');
-            if (row === 1 || row === 2 || row === 3 || row === 5) {
-                // Title, Filter, Date, and Header
-                wsCategories[cell].s = {
-                    font: { bold: true, color: { rgb: PRIMARY_COLOR.replace('#', '') } },
-                    fill: { fgColor: { rgb: 'E6F3E6' } }, // Light green background
-                    alignment: { horizontal: cell.startsWith('B') || cell.startsWith('C') ? 'right' : 'left' },
-                    border: {
-                        top: { style: 'thin', color: { rgb: BLACK_COLOR.replace('#', '') } },
-                        bottom: { style: 'thin', color: { rgb: BLACK_COLOR.replace('#', '') } },
-                        left: { style: 'thin', color: { rgb: BLACK_COLOR.replace('#', '') } },
-                        right: { style: 'thin', color: { rgb: BLACK_COLOR.replace('#', '') } },
-                    },
-                };
-            } else if (row >= 6) {
-                // Data rows
-                wsCategories[cell].s = {
-                    alignment: { horizontal: cell.startsWith('A') ? 'left' : 'right' },
-                    border: {
-                        top: { style: 'thin', color: { rgb: BLACK_COLOR.replace('#', '') } },
-                        bottom: { style: 'thin', color: { rgb: BLACK_COLOR.replace('#', '') } },
-                        left: { style: 'thin', color: { rgb: BLACK_COLOR.replace('#', '') } },
-                        right: { style: 'thin', color: { rgb: BLACK_COLOR.replace('#', '') } },
-                    },
-                };
-            }
-        });
-        XLSX.utils.book_append_sheet(wb, wsCategories, 'Best Selling Categories');
-
-        // Highest Paid Vendors Table
-        const vendorData = [
-            ['ShopNest Sales Report - Highest Paid Vendors'],
-            [`Filter: ${filterType.charAt(0).toUpperCase() + filterType.slice(1)}`],
-            [dateText],
-            [],
-            ['Vendor Name', 'Email', 'Payout'],
-            ...backendData.highestPaidVendor.map((vendor) => [
-                vendor.vendor_name,
-                vendor.vendor_email,
-                customFormatINR(vendor.payout),
-            ]),
-        ];
-
-        const wsVendors = XLSX.utils.aoa_to_sheet(vendorData);
-        wsVendors['!cols'] = [
-            { wch: 30 }, // Vendor Name
-            { wch: 40 }, // Email
-            { wch: 20 }, // Payout
-        ];
-
-        Object.keys(wsVendors).forEach((cell) => {
-            const row = parseInt(cell.match(/\d+/)?.[0] || '0');
-            if (row === 1 || row === 2 || row === 3 || row === 5) {
-                // Title, Filter, Date, and Header
-                wsVendors[cell].s = {
-                    font: { bold: true, color: { rgb: PRIMARY_COLOR.replace('#', '') } },
-                    fill: { fgColor: { rgb: 'E6F3E6' } }, // Light green background
-                    alignment: { horizontal: cell.startsWith('C') ? 'right' : 'left' },
-                    border: {
-                        top: { style: 'thin', color: { rgb: BLACK_COLOR.replace('#', '') } },
-                        bottom: { style: 'thin', color: { rgb: BLACK_COLOR.replace('#', '') } },
-                        left: { style: 'thin', color: { rgb: BLACK_COLOR.replace('#', '') } },
-                        right: { style: 'thin', color: { rgb: BLACK_COLOR.replace('#', '') } },
-                    },
-                };
-            } else if (row >= 6) {
-                // Data rows
-                wsVendors[cell].s = {
-                    alignment: { horizontal: cell.startsWith('C') ? 'right' : 'left' },
-                    border: {
-                        top: { style: 'thin', color: { rgb: BLACK_COLOR.replace('#', '') } },
-                        bottom: { style: 'thin', color: { rgb: BLACK_COLOR.replace('#', '') } },
-                        left: { style: 'thin', color: { rgb: BLACK_COLOR.replace('#', '') } },
-                        right: { style: 'thin', color: { rgb: BLACK_COLOR.replace('#', '') } },
-                    },
-                };
-            }
-        });
-        XLSX.utils.book_append_sheet(wb, wsVendors, 'Highest Paid Vendors');
+        XLSX.utils.book_append_sheet(wb, wsProducts, 'Ordered Products');
 
         XLSX.writeFile(wb, `ShopNest_Sales_Report_${filterType}_${new Date().toISOString().split('T')[0]}.xlsx`);
     };
