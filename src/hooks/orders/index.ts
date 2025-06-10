@@ -19,53 +19,39 @@ export const useOrderByVendorQuery = ({ page, limit, search }: { page: object, l
     })
 }
 
-export const useDownloadInvoice = ({ orderId }: { orderId: number }) => {
-    return useQuery({
-        queryKey: ["invoice"],
-        queryFn: async () => {
-            try {
-                const { data } = await api.get(`/order/invoice/${orderId}`, {
-                    responseType: 'blob',
-                    headers: {
-                        "Accept": "application/pdf",
-                    },
-                });
 
-                const blob = data instanceof Blob ? data : new Blob([data], { type: "application/pdf" });
+export const useDownloadInvoice = () => {
+    return useMutation({
+        mutationFn: async ({orderId}:{orderId:number}) => {
+            const { data } = await api.get(`/order/invoice/${orderId}`, {
+                responseType: 'blob',
+                headers: {
+                    "Accept": "application/pdf",
+                },
+            });
 
-                if (blob.type === "application/json") {
-                    const text = await blob.text();
-                    console.error("Backend error response:", text);
-                    const errorData = JSON.parse(text);
-                    throw new Error(errorData.message || "Server returned an error");
-                }
+            const blob = data instanceof Blob ? data : new Blob([data], { type: "application/pdf" });
 
-                const url = window.URL.createObjectURL(blob);
-
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = `invoice-${orderId}.pdf`;
-                document.body.appendChild(link);
-                link.click();
-
-                link.remove();
-                window.URL.revokeObjectURL(url);
-
-                return { success: true };
-            } catch (error: any) {
-                console.error("Invoice download error:", {
-                    message: error.message,
-                    status: error.response?.status,
-                    headers: error.response?.headers,
-                    data: error.response?.data,
-                });
-                throw new Error(error.message || "Failed to download invoice");
+            if (blob.type === "application/json") {
+                const text = await blob.text();
+                const errorData = JSON.parse(text);
+                throw new Error(errorData.message || "Server returned an error");
             }
-        },
-        enabled: false,
-        retry: false,
+
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `invoice-${orderId}.pdf`;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            window.URL.revokeObjectURL(url);
+
+            return { success: true };
+        }
     });
-}
+};
+
 
 export const useOrderMutation = () => {
     const { toast } = useToast()

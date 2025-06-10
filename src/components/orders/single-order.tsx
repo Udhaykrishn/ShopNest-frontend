@@ -163,25 +163,27 @@ export const SingleOrder: React.FC<{ orders: Order }> = ({ orders }) => {
     const [cancelItemReason, setCancelItemReason] = useState('');
     const [returnItemReason, setReturnItemReason] = useState('');
     const { cancelPerItemOrder, orderReturnMutation } = useOrderMutation();
-    const invoice = useDownloadInvoice({ orderId: orders.orderId });
+    const invoice = useDownloadInvoice();
     const { retryPayment } = usePayment()
     const { handlePaymentDismiss } = usePaymentHooks({})
 
     const isPaymentFailed = orders.paymentStatus === 'failed';
 
     const downloadInvoice = async () => {
-        try {
-            await invoice.refetch();
-            toast({
-                title: "Invoice downloaded successfully",
-                variant: "default",
-            });
-        } catch (error: any) {
-            toast({
-                title: error.message || "Failed to download invoice",
-                variant: "destructive",
-            });
-        }
+         invoice.mutate({ orderId: orders.orderId }, {
+            onSuccess: () => {
+                toast({
+                    title: "Invoice downloaded successfully",
+                    variant: "default",
+                });
+            },
+            onError: (error: any) => {
+                toast({
+                    title: error.response.data.message || error?.message  || "Failed to download invoice",
+                    variant: "destructive",
+                });
+            }
+        });
     };
 
     const cancelOrderItem = async (orderId: number, itemId: string, reason: string) => {
@@ -279,10 +281,10 @@ export const SingleOrder: React.FC<{ orders: Order }> = ({ orders }) => {
                                     variant="outline"
                                     onClick={downloadInvoice}
                                     className="text-primary border-primary hover:bg-primary/10 font-medium"
-                                    disabled={invoice.isFetching}
+                                    disabled={invoice.isPending}
                                 >
                                     <FileText className="mr-2 h-5 w-5" />
-                                    {invoice.isFetching ? 'Downloading...' : 'Download Invoice'}
+                                    {invoice.isPending ? 'Downloading...' : 'Download Invoice'}
                                 </Button>
                             )
                         }
