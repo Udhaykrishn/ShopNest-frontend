@@ -30,6 +30,8 @@ export const useDownloadInvoice = () => {
                 },
             });
 
+            console.log("data is: ",data)
+
             const blob = data instanceof Blob ? data : new Blob([data], { type: "application/pdf" });
 
             if (blob.type === "application/json") {
